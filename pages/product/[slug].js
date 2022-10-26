@@ -1,11 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext } from "react";
 import { Layout } from "../../components/Layout";
 import data from "../../utils/data.json";
+import { Store } from "../../utils/Store";
 
 export default function ProductPage() {
+    
+    const {state, dispatch} = useContext(Store);
+
     const {query} = useRouter();
     const {slug} = query;
     const product = data.products.find( x => x.slug === slug);
@@ -13,6 +17,11 @@ export default function ProductPage() {
     if (!product) {
         return <div>Product Not Found</div>;
     }
+
+    const addToCartHandler = () => {
+        dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
+    }
+
     return (
         <Layout title={product.title}>
             <div className="py-2">
@@ -50,7 +59,7 @@ export default function ProductPage() {
                             <div>{product.stock > 0 ? 'In stock' : 'Unavailable'}</div>
                         </div>
 
-                        <button className="primary-button w-full">Add to Cart</button>
+                        <button className="primary-button w-full" onClick={addToCartHandler}>Add to Cart</button>
 
                     </div>
                 </div>
