@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useContext } from "react";
 import { Layout } from "../components/Layout";
 import { Store } from "../utils/Store";
@@ -9,8 +10,10 @@ export default function CartPage() {
 
     const { state, dispatch} = useContext(Store);
     const { cart: { cartItems } } = state;
+    const router = useRouter()
 
     const removeItemHandler = (item) => {
+        
         dispatch( {type: 'CART_REMOVE_ITEM', payload: item} )
 
     }
@@ -55,7 +58,7 @@ export default function CartPage() {
                                         <td className="p-5 text-right">{item.quantity}</td>
                                         <td className="p-5 text-right">${item.price}</td>
                                         <td className="p-5 text-center">
-                                            <button onClick={()=> removeItemHandler(item)}>Eliminar</button>
+                                            <button onClick={()=> removeItemHandler(item)}>❌</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -63,6 +66,25 @@ export default function CartPage() {
 
                         </table>
 
+                    </div>
+
+                    <div className="card p-5">
+                        <ul>
+                            <li>
+                                <div className="pb-3 text-xl">  
+                                    <span>Subtotal: $</span>
+                                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                                </div>
+                            </li>
+                            <li>
+                                <button
+                                    className="primary-button w-full" 
+                                    onClick={()=>router.push('/shipping')}
+                                >
+                                    Check out
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             )
