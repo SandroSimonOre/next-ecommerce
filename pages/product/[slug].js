@@ -35,7 +35,7 @@ export default function ProductPage() {
                         alt={product.title}
                         width={640}
                         height={640}
-                        Layout="responsive"
+                        layout="responsive"
                     ></Image>
                 </div>
                 <div>
