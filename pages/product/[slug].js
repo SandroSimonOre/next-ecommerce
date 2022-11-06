@@ -1,26 +1,35 @@
 import Link from "next/link";
 import Image from "next/image";
 import Router, { useRouter } from "next/router";
-import React, { useContext } from "react";
+//import React, { useContext } from "react";
 import { Layout } from "../../components/Layout";
 import data from "../../utils/data.json";
-import { Store } from "../../utils/Store";
+import { useSelector, useDispatch } from 'react-redux'
+import { add } from '../../features/cart/cartSlice';
+
+//import { Store } from "../../utils/Store";
 
 export default function ProductPage() {
+
+    const cart = useSelector((state) => state.cart);
+    console.log('carrooooo',cart)
+    const dispatch = useDispatch()
     
-    const {state, dispatch} = useContext(Store);
+    //const {state, dispatch} = useContext(Store);
     const router = useRouter();
     const {query} = useRouter();
     const {slug} = query;
     const product = data.products.find( x => x.slug === slug);
     
+    //console.log(product)
     if (!product) {
         return <div>Product Not Found</div>;
     }
 
     const addToCartHandler = () => {
-        dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
-        router.push('/cart')
+        //console.log('agregando')
+        dispatch(add({ payload: { ...product, quantity: 1 }}) );
+        //router.push('/cart')
     }
 
     return (

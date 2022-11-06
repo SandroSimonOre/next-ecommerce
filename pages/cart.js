@@ -3,18 +3,19 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { Layout } from "../components/Layout";
-import { Store } from "../utils/Store";
-
+//import { Store } from "../utils/Store";
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function CartPage() {
 
-    const { state, dispatch} = useContext(Store);
-    const { cart: { cartItems } } = state;
+    //const { state, dispatch} = useContext(Store);
+    const { cart: { cartItems } } = useSelector((state) => state.cart.cartItems)
+    //const { cart: { cartItems } } = state;
     const router = useRouter()
 
     const removeItemHandler = (item) => {
         
-        dispatch( {type: 'CART_REMOVE_ITEM', payload: item} )
+        //dispatch( {type: 'CART_REMOVE_ITEM', payload: item} )
 
     }
 

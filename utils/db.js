@@ -1,45 +1,62 @@
 import mongoose from 'mongoose';
 
-const connection = {}; // ????
+const MONGODB_URI = process.env.MONGO_URI;
 
-async function connect() {
+if (!MONGODB_URI) {
+  throw new Error(
+    'Please define the MONGO_URI environment variable inside .env.local'
+  );
+}
 
-  if (connection.isConnected) {
-    console.log('already connected'); // Remove this line
-    return;
+/**
+ * Global is used here to maintain a cached connection across hot reloads
+ * in development. This prevents connections growing exponentially
+ * during API Route usage.
+ */
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  if (mongoose.connections.length > 0) {
-    connection.isConnected = mongoose.connections[0].readyState;
-    if (connection.isConnected === 1) {
-      console.log('use previous connection'); // Remove this line
-      return;
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
     }
-    await mongoose.disconnect();
+
+    cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
+      return mongoose
+    })
   }
-  
-  const db = await mongoose.connect(process.env.MONGODB_URI);
-  console.log('new connection'); // Remove this line
-  connection.isConnected = db.connections[0].readyState;
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
 
-async function disconnect() {
-  if (connection.isConnected) {
-    if (process.env.NODE_ENV === 'production') {
-      await mongoose.disconnect();
-      connection.isConnected = false;
-    } else {
-      console.log('not disconnected'); // Remove this line
+export default dbConnect;
+
+/*
+ALTERNATIVE VERSION
+import mongoose from 'mongoose';
+
+const connectMongo = async ()=> {
+  try {
+
+    const {connection} = await mongoose.connect(process.env.MONGODB_URI);
+
+    if (connection.readyState === 1 ) {
+      return Promise.resolve(true)
     }
+
+  } catch (error) {
+    return Promise.reject(error)
   }
 }
-// What is this for??
-function convertDocToObj(doc) {
-  doc._id = doc._id.toString();
-  doc.createdAt = doc.createdAt.toString();
-  doc.updatedAt = doc.updatedAt.toString();
-  return doc;
-}
 
-const db = { connect, disconnect, convertDocToObj };
-export default db;
+export default connectMongo;
+*/

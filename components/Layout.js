@@ -5,15 +5,15 @@ import { Menu } from '@headlessui/react';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
 import Link from "next/link";
-import { Store } from "../utils/Store";
+//import { Store } from "../utils/Store";
 import DropdownLink from './DropdownLink'; // REVIEW THIS CODE
 
 export const Layout = ({title, children}) => {
 
     const { status, data: session } = useSession();
 
-    const {state, dispatch} = useContext(Store);
-    const { cart } = state;
+    //const {state, dispatch} = useContext(Store);
+    //const { cart } = state;
 
     /*
     const [cartItemsCount, setCartItemsCount] = useState(0);
@@ -48,51 +48,20 @@ export const Layout = ({title, children}) => {
                             <Link href="/cart">
                                 <a className="p-2">
                                     Cart
-                                    {cart.cartItems.length > 0 && (
+                                    {/* {cart.cartItems.length > 0 && (
                                         <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
                                             {cart.cartItems.length}
                                         </span>
-                                    )}
+                                    )} */}
                                 </a>
                             </Link>
-
-                            {status === 'loading' ? (
-                                'Loading'
-                            ) : session?.user ? (
-                                <Menu as="div" className="relative inline-block">
-                                <Menu.Button className="text-blue-600">
-                                    {session.user.email}
-                                </Menu.Button>
-                                <Menu.Items className="absolute right-0 w-56 origin-top-right bg-white  shadow-lg ">
-                                    <Menu.Item>
-                                        <DropdownLink className="dropdown-link" href="/profile">
-                                            Profile
-                                        </DropdownLink>
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        <DropdownLink className="dropdown-link" href="/order-history" >
-                                            Order History
-                                        </DropdownLink>
-                                    </Menu.Item>
-                                    {session.user.isAdmin && (
-                                        <Menu.Item>
-                                            <DropdownLink className="dropdown-link" href="/admin/dashboard" >
-                                                Admin Dashboard
-                                            </DropdownLink>
-                                        </Menu.Item>
-                                    )}
-                                    <Menu.Item>
-                                        <a className="dropdown-link" href="#" onClick={logoutClickHandler} >
-                                            Logout
-                                        </a>
-                                    </Menu.Item>
-                                </Menu.Items>
-                                </Menu>
-                            ) : (
-                                <Link href="/login">
-                                    <a className="p-2">Login</a>
-                                </Link>
-                            )}
+                            
+                            {
+                                (status === 'authenticated') 
+                                ? <p>{session.user.email}</p>
+                                : <a href="/api/auth/signin/">Sign in</a>
+                            }
+                            
                         </div>
 
                     </nav>
