@@ -20,12 +20,12 @@ async function handler(req, res) {
     return;
   }
 
-  await db.connect();
+  //await db.connect();
 
   const existingUser = await User.findOne({ email: email });
   if (existingUser) {
     res.status(422).json({ message: 'User exists already!' });
-    await db.disconnect();
+    //await db.disconnect();
     return;
   }
 

@@ -1,28 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+//import { useContext } from "react";
 import { Layout } from "../components/Layout";
-//import { Store } from "../utils/Store";
+
 import { useSelector, useDispatch } from 'react-redux';
+import { removeItem } from '../features/cart/cartSlice';
 
 export default function CartPage() {
-
-    //const { state, dispatch} = useContext(Store);
-    const { cart: { cartItems } } = useSelector((state) => state.cart.cartItems)
-    //const { cart: { cartItems } } = state;
+    
     const router = useRouter()
-
-    const removeItemHandler = (item) => {
+    
+    const dispatch = useDispatch();
+    const items = useSelector( state => state.cart.items)
+    
+    const removeItemHandler = (id) => {
         
-        //dispatch( {type: 'CART_REMOVE_ITEM', payload: item} )
+        dispatch( removeItem(id) )
 
     }
 
     return (
         <Layout title="Shopping Cart">
             <h1 className="mb-4 text-xl">Shopping Cart</h1>
-            {cartItems.length === 0 ? (
+            {items.length === 0 ? (
                 <div>
                     Cart is empty. <Link href='/'>Go shopping</Link>
                 </div>
@@ -40,7 +41,7 @@ export default function CartPage() {
 
                             </thead>
                             <tbody>
-                                {cartItems.map( item => (
+                                {items.map( item => (
                                     <tr key= {item.id} className="border-b">
                                         <td>
                                             <Link href={`/product/${item.slug}`}>
@@ -59,7 +60,7 @@ export default function CartPage() {
                                         <td className="p-5 text-right">{item.quantity}</td>
                                         <td className="p-5 text-right">${item.price}</td>
                                         <td className="p-5 text-center">
-                                            <button onClick={()=> removeItemHandler(item)}>❌</button>
+                                            <button onClick={()=> removeItemHandler(item.id)}>❌</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -74,7 +75,7 @@ export default function CartPage() {
                             <li>
                                 <div className="pb-3 text-xl">  
                                     <span>Subtotal: $</span>
-                                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                                    {items.reduce((a, c) => a + c.quantity * c.price, 0)}
                                 </div>
                             </li>
                             <li>

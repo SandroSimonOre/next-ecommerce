@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
+//import { current } from '@reduxjs/toolkit';
 
 const initialState = {
-  cart : { cartItems: [] },
+    items: []
 }
 
 export const cartSlice = createSlice({
@@ -9,32 +10,23 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    add: (state, action) => {
-      console.log(action.payload)
-      const newItem = action.payload;
-      const existingItem = state.cart.cartItems.find(item => item.id === newItem.id);
+    addItem: (state, action) => {
+      
+      state.items.push(action.payload);
+      
+    },
 
-      const cartItems = existingItem
-          ? state.cart.cartItems.map( item => item.id === newItem.id ? newItem : item)
-          : [...state.cart.cartItems, newItem];
-      console.log('carrito', cartItems)      
-      return {...state, cart: {...state.cart, cartItems}} 
+    removeItem: (state, action) => {
+      console.log(action.payload)
+      state.items = state.items.filter(item => item.id !== action.payload);
+    }
+      
+      
     
-    },
-    
-    remove: (state) => {
-      state.value -= 1
-    },
-    
-    /*
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
-    },
-    */
+
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { add, remove } = cartSlice.actions
+export const { addItem, removeItem } = cartSlice.actions
 
 export default cartSlice.reducer

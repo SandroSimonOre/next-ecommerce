@@ -8,10 +8,13 @@ import Link from "next/link";
 //import { Store } from "../utils/Store";
 import DropdownLink from './DropdownLink'; // REVIEW THIS CODE
 
+import { useSelector } from 'react-redux';
+
 export const Layout = ({title, children}) => {
 
     const { status, data: session } = useSession();
-
+    const items = useSelector( state => state.cart.items);
+    //console.log('Layout', items)
     //const {state, dispatch} = useContext(Store);
     //const { cart } = state;
 
@@ -48,11 +51,11 @@ export const Layout = ({title, children}) => {
                             <Link href="/cart">
                                 <a className="p-2">
                                     Cart
-                                    {/* {cart.cartItems.length > 0 && (
+                                    {(items) && (
                                         <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
-                                            {cart.cartItems.length}
+                                            {items.length}
                                         </span>
-                                    )} */}
+                                    )}
                                 </a>
                             </Link>
                             
@@ -60,6 +63,9 @@ export const Layout = ({title, children}) => {
                                 (status === 'authenticated') 
                                 ? <p>{session.user.email}</p>
                                 : <a href="/api/auth/signin/">Sign in</a>
+                            }
+                            {
+                                (status === 'authenticated') && <a href="/api/auth/signout/">Log out</a>
                             }
                             
                         </div>
