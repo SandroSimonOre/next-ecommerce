@@ -35,7 +35,7 @@ export default function SignupPage() {
         email,
         password,
       });
-      //console.log('Intentando registrar')
+      console.log('Intentando registrar')
       const result = await signIn('credentials', {
         redirect: false,
         email,

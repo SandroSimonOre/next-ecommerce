@@ -1,3 +1,27 @@
+/*
+// utils/dbConnect.js
+import mongoose from "mongoose";
+
+async function dbConnect() {
+  if (mongoose.connection.readyState >= 1) {
+    // if connection is open return the instance of the databse for cleaner queries
+    console.log('CONECTANDO...')
+    return mongoose.connection.db;
+  }
+
+  return mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+    poolSize: 10, //increase poolSize from default 5
+  });
+}
+
+export default dbConnect;
+*/
+
+
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -13,6 +37,7 @@ if (!MONGODB_URI) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
+
 let cached = global.mongoose;
 
 if (!cached) {

@@ -6,7 +6,6 @@ import { Layout } from '../components/Layout';
 import { getError } from '../utils/error';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 //import {config} from '../myapp.config'
 
 export default function LoginPage() {
@@ -29,15 +28,17 @@ export default function LoginPage() {
   //console.log('hello', config.test)
 
   const submitHandler = async ({ email, password }) => {
+    
     try {
+      
       const result = await signIn('credentials', {
         redirect: false,
         email,
         password,
       });
-      //await axios.post('/api/auth/signin', { email, password, });
       
       if (result.error) {
+        
         toast.error(result.error);
         //console.log('hubo un error')
         //toast.error('Se ha producido un error.');

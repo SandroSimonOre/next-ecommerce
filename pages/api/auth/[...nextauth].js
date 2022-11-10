@@ -26,11 +26,13 @@ export default NextAuth({
     CredentialsProvider({
 
       async authorize(credentials) {
-
+        const db = await  dbConnect()
+        //console.log(credentials)
+        console.log('......')
         const user = await User.findOne({
           email: credentials.email,
         });
-        console.log(user)
+        //console.log(user)
         
         if (user && bcrypt.compareSync(credentials.password, user.password)) {
           
