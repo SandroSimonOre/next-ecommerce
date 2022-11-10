@@ -5,14 +5,14 @@ import { useRouter } from "next/router";
 import { Layout } from "../components/Layout";
 
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem } from '../features/cart/cartSlice';
+import { removeItem, incrementQty, decrementQty } from '../features/cart/cartSlice';
 
 export default function CartPage() {
     
     const router = useRouter()
     
     const dispatch = useDispatch();
-    const items = useSelector( state => state.cart.items)
+    const items = useSelector( state => state.cart.items);
     
     const removeItemHandler = (id) => {
         
@@ -35,8 +35,9 @@ export default function CartPage() {
                                 <tr>
                                     <th className="px-5 text-left">Item</th>
                                     <th className="p-5 text-right">Quantity</th>
-                                    <th className="p-5 text-right">Price</th>
-                                    <th className="p-5">Action</th>
+                                    <th className="p-5 text-right">Unit. Price</th>
+                                    <th className="p-5 text-right">Total Price</th>
+                                    
                                 </tr>
 
                             </thead>
@@ -57,11 +58,20 @@ export default function CartPage() {
                                                 </a>
                                             </Link>
                                         </td>
-                                        <td className="p-5 text-right">{item.quantity}</td>
-                                        <td className="p-5 text-right">${item.price}</td>
-                                        <td className="p-5 text-center">
-                                            <button onClick={()=> removeItemHandler(item.id)}>❌</button>
+                                        <td /* className="p-5 text-right" */>
+                                        <div>
+                                            {   
+                                                item.quantity === 1 
+                                                    ? <button onClick={ ()=> dispatch(removeItem(item.id)) }>❌</button>
+                                                    : <button onClick={ ()=> dispatch(decrementQty(item.id))}>➖</button>
+                                            }
+                                            <span>{item.quantity}</span>
+                                            <button onClick={ ()=> dispatch(incrementQty(item.id)) }>➕</button>
+                                        </div>
                                         </td>
+                                        <td className="p-5 text-right">${item.price}</td>
+                                        <td className="p-5 text-right">${item.price * item.quantity}</td>
+                                        
                                     </tr>
                                 ))}
                             </tbody>
