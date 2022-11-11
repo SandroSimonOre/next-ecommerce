@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     items: [],
     shippingAddress: {},
+    paymentMethod: '',
 
 }
 
@@ -36,16 +37,29 @@ export const cartSlice = createSlice({
     },
 
     setShippingAddress: (state, action) => {
-      console.log(action.payload);
+      //console.log(action.payload);
       state.shippingAddress = action.payload;
+    },
+
+    setPaymentMethod: (state, action) => {
+      state.paymentMethod = action.payload;
+    },
+
+    clearCartItems: (state) => {
+      state.items = [];
     }
       
-      
-    
-
   },
 })
 
-export const { addItem, removeItem, incrementQty, decrementQty, setShippingAddress } = cartSlice.actions
+export const {
+  addItem,
+  removeItem,
+  incrementQty, 
+  decrementQty, 
+  setShippingAddress,
+  setPaymentMethod,
+  clearCartItems,
+} = cartSlice.actions
 
 export default cartSlice.reducer

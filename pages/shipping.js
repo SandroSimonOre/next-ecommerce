@@ -5,7 +5,7 @@ import { CheckoutWizard }  from '../components/CheckoutWizard';
 import { Layout } from '../components/Layout';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, incrementQty, decrementQty, setShippingAddress } from '../features/cart/cartSlice';
+import { setShippingAddress } from '../features/cart/cartSlice';
 
 export default function ShippingPage() {
     const shippingAddress = useSelector( state => state.cart.shippingAddress);
