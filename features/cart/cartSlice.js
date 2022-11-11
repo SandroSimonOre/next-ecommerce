@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 //import { current } from '@reduxjs/toolkit';
 
 const initialState = {
-    items: []
+    items: [],
+    shippingAddress: {},
+
 }
 
 export const cartSlice = createSlice({
@@ -31,6 +33,11 @@ export const cartSlice = createSlice({
     decrementQty: (state, action) => {
       const item = state.items.find( item => action.payload === item.id );
       item.quantity--;
+    },
+
+    setShippingAddress: (state, action) => {
+      console.log(action.payload);
+      state.shippingAddress = action.payload;
     }
       
       
@@ -39,6 +46,6 @@ export const cartSlice = createSlice({
   },
 })
 
-export const { addItem, removeItem, incrementQty, decrementQty } = cartSlice.actions
+export const { addItem, removeItem, incrementQty, decrementQty, setShippingAddress } = cartSlice.actions
 
 export default cartSlice.reducer
