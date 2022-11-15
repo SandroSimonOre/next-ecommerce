@@ -113,13 +113,13 @@ export default function PlaceOrderPage() {
                             <Link href={`/product/${item.slug}`}>
                             <a className="flex items-center">
                                 <Image
-                                src={item.image}
-                                alt={item.name}
+                                src={item.thumbnail}
+                                alt={item.title}
                                 width={50}
                                 height={50}
                                 ></Image>
                                 &nbsp;
-                                {item.name}
+                                {item.title}
                             </a>
                             </Link>
                         </td>
