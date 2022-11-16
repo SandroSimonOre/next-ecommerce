@@ -80,6 +80,7 @@ function OrderPage() {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
+    
     if (
       !order._id ||
       successPay ||

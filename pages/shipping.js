@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 //import Cookies from 'js-cookie';
-import { CheckoutWizard }  from '../components/CheckoutWizard';
+
 import { Layout } from '../components/Layout';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
@@ -54,7 +54,7 @@ export default function ShippingPage() {
 
   return (
     <Layout title="Shipping Address">
-      <CheckoutWizard activeStep={1} />
+      
       <form
         className="mx-auto max-w-screen-md"
         onSubmit={handleSubmit(submitHandler)}

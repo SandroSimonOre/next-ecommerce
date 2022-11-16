@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 //import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { CheckoutWizard } from '../components/CheckoutWizard';
+
 import { Layout } from '../components/Layout';
 import { getError } from '../utils/error';
 import { useSelector, useDispatch } from 'react-redux';
@@ -68,7 +68,7 @@ export default function PlaceOrderPage() {
 
     return (
         <Layout title="Place Order">
-        <CheckoutWizard activeStep={3} />
+        
         <h1 className="mb-4 text-xl">Place Order</h1>
         {items.length === 0 ? (
             <div>
