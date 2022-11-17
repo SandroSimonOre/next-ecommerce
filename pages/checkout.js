@@ -1,22 +1,25 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+//import { useForm } from 'react-hook-form';
 //import Cookies from 'js-cookie';
 
 import { Layout } from '../components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
 import { setPaymentMethod } from '../features/cart/cartSlice';
-
+import { IdentificationForm } from '../components/IdentificationForm';
+import { ShippingForm } from '../components/ShippingForm';
 export default function CheckoutPage() {
 
     
     const [activeStep, setActiveStep] = useState(3);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
+
     const handleChangingStep = (step)=> {
         setActiveStep(step)
     }
 
-    const handleSubmitIdentificationForm = (e) => {
+    const handleSubmitIdentification = (e) => {
         //e.preventDefault();
         setActiveStep(2)
     };
@@ -34,7 +37,7 @@ export default function CheckoutPage() {
             </div>
             <div className=''>
                 <div className='flex justify-between border-2 border-red-800'>
-                    <h3>Address</h3>
+                    <h3>IDENTIFICATION</h3>
                     {
                         activeStep !== 1 &&
                             <p onClick={()=> handleChangingStep(1)}>Edit</p>
@@ -43,15 +46,13 @@ export default function CheckoutPage() {
                 { 
                     activeStep === 1 &&
                         <div className='h-60 border-2 border-red-800'>
-                            <form action="">
-                                <input type="submit" value="Continue" />
-                            </form>
+                            <IdentificationForm setActiveStep={setActiveStep} />
                         </div>
 
                 }
                 
                 <div className='flex justify-between border-2 border-blue-800'>
-                    <h3>Shipping</h3>
+                    <h3>SHIPPING</h3>
                     {
                         activeStep !== 2 &&
                             <p onClick={()=> handleChangingStep(2)}>Edit</p>
@@ -61,9 +62,7 @@ export default function CheckoutPage() {
                 { 
                     activeStep === 2 &&
                         <div className='h-60 border-2 border-blue-800'>
-                            <form action="">
-                                <input type="submit" value="Continue" />
-                            </form>
+                            <ShippingForm setActiveStep={setActiveStep}/>
                         </div>
 
                 }

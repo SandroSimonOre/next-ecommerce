@@ -5,7 +5,7 @@ const initialState = {
     items: [],
     shippingAddress: {},
     paymentMethod: '',
-
+    identification: {},
 }
 
 export const cartSlice = createSlice({
@@ -47,6 +47,11 @@ export const cartSlice = createSlice({
 
     clearCartItems: (state) => {
       state.items = [];
+    },
+
+    setIdentification: (state, action) => {
+      console.log(action.payload);
+      state.identification = action.payload;
     }
       
   },
@@ -60,6 +65,7 @@ export const {
   setShippingAddress,
   setPaymentMethod,
   clearCartItems,
+  setIdentification
 } = cartSlice.actions
 
 export default cartSlice.reducer
