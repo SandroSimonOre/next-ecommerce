@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 //import { useForm } from 'react-hook-form';
 //import Cookies from 'js-cookie';
-
+import PaypalButton from '../components/PaypalButton';
 import { Layout } from '../components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
 import { setPaymentMethod } from '../features/cart/cartSlice';
@@ -79,48 +79,7 @@ export default function CheckoutPage() {
                     activeStep === 3 &&
                     <div className='h-60 border-2 border-green-800'>
                         
-                        <div 
-                            className='h-30 bg-blue-400'
-                            onClick={()=>setSelectedPaymentMethod(1)}
-                        >Paypal</div>
-                        {
-                            selectedPaymentMethod === 1 &&
-                                <div>
-                                    <h2>Paypal</h2>
-                                    <form action="">
-                                        <input type="submit" value="Continue" />
-                                    </form>    
-                                </div>
-                                
-                        }
-                        
-                        <div
-                            className='h-30 bg-green-400' 
-                            onClick={()=>setSelectedPaymentMethod(2)}
-                        >Stripe</div>
-                        {   
-                            selectedPaymentMethod === 2 &&
-                            <div>
-                                <h2>Stripe</h2>  
-                                <form action="">
-                                    <input type="submit" value="Finish" />
-                                </form>    
-                            </div>
-                        }
-
-                        <div
-                            className='h-30 bg-yellow-400' 
-                            onClick={()=>setSelectedPaymentMethod(3)}
-                        >Contraentrega</div>
-                        {   selectedPaymentMethod === 3 &&
-                            
-                            <div>
-                                <h2>CashOnDelivery</h2>
-                                <form action="">
-                                    <input type="submit" value="Continue" />
-                                </form>
-                            </div>
-                        }
+                        <PaypalButton />
                         
                     </div>
                 }
