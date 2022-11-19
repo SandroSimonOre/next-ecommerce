@@ -1,4 +1,3 @@
-//import styles from "../styles/Home.module.css";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from "axios";
 
@@ -7,14 +6,14 @@ export default function PaypalButton() {
     <div className=''>
         <PayPalScriptProvider
             options={{
-                "client-id": "AZwlIYrIDRHc53VOQEK6yMUGEvJnO6Chvzep2UaObBMrsaul9aK-ceIdo0RYLDmW2Dq6Ia5OjgJJCDhL",
+                "client-id": 'AZwlIYrIDRHc53VOQEK6yMUGEvJnO6Chvzep2UaObBMrsaul9aK-ceIdo0RYLDmW2Dq6Ia5OjgJJCDhL',
             }}
         >
         <PayPalButtons
           createOrder={async () => {
             try {
               const res = await axios({
-                url: "http://localhost:3000/api/payment",
+                url: "/api/payment",
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

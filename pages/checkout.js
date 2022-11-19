@@ -12,7 +12,7 @@ import { ShippingForm } from '../components/ShippingForm';
 export default function CheckoutPage() {
 
     
-    const [activeStep, setActiveStep] = useState(3);
+    const [activeStep, setActiveStep] = useState(2);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
 
     const handleChangingStep = (step)=> {
@@ -45,7 +45,7 @@ export default function CheckoutPage() {
                 </div>
                 { 
                     activeStep === 1 &&
-                        <div className='h-60 border-2 border-red-800'>
+                        <div className='border-2 border-red-800'>
                             <IdentificationForm setActiveStep={setActiveStep} />
                         </div>
 

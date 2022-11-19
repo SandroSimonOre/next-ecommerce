@@ -1,7 +1,7 @@
 import paypal from "@paypal/checkout-server-sdk";
 // Creating an environment
-let clientId = "AZwlIYrIDRHc53VOQEK6yMUGEvJnO6Chvzep2UaObBMrsaul9aK-ceIdo0RYLDmW2Dq6Ia5OjgJJCDhL";
-let clientSecret = "EOWSfBT3R6qhO9hD_QcoEGbk6FlrIIChIEzVl_1XpMyMtnOScLqUDllCOxBx_5B98aL7tleuwCh2jj98";
+let clientId = process.env.CLIENT_ID;
+let clientSecret = process.env.CLIENT_SECRET;
 
 // This sample uses SandboxEnvironment. In production, use LiveEnvironment
 let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
