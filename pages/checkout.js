@@ -15,6 +15,7 @@ export default function CheckoutPage() {
     const [activeStep, setActiveStep] = useState(2);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
     const identification = useSelector( state => state.cart.identification);
+    const deliveryInfo = useSelector( state => state.cart.deliveryInfo);
 
     const handleChangingStep = (step)=> {
         setActiveStep(step)
@@ -40,8 +41,12 @@ export default function CheckoutPage() {
                     <p>{identification.address}</p>
                     <p>{identification.postalCode}</p>
                 </div>
-                <br />
                 <h2>== SHIPPING ==</h2>
+                <div>
+                    <p>Modo Entrega: {deliveryInfo.deliveryMode}</p>
+                    <p>Tienda: {deliveryInfo.store}</p>
+                </div>
+                <br />
             </div>
             <div className=''>
                 <div className='flex justify-between border-2 border-red-800'>
@@ -87,7 +92,7 @@ export default function CheckoutPage() {
                     activeStep === 3 &&
                     <div className='h-60 border-2 border-green-800'>
                         
-                        <PaypalButton />
+                        {/* <PaypalButton /> */}
                         
                     </div>
                 }

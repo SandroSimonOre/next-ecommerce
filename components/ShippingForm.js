@@ -1,15 +1,26 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setDeliveryInfo } from '../features/cart/cartSlice';
 
 export const ShippingForm = ({setActiveStep})=> {
-    
-    const {register, handleSubmit} = useForm();
-    const [ deliveryMode, setDeliveryMode ] = useState();
 
-    const onSubmit = () => {
-        
+    const deliveryInfo = useSelector( state => state.cart.deliveryInfo);
+    const {store, deliveryMode} = deliveryInfo; 
+    const {register, handleSubmit} = useForm();
+    const [ mode, setMode ] = useState(deliveryMode);
+    const dispatch = useDispatch();
+    
+    const onSubmit = (data) => {
+        dispatch(setDeliveryInfo(data))
         setActiveStep(3)
     }
+
+    const handleChangeMode = (e) => {
+        
+        setMode(parseInt(e.target.value))
+    }
+
     return (
         <form 
             className='mx-auto max-w-screen-md'
@@ -25,14 +36,17 @@ export const ShippingForm = ({setActiveStep})=> {
 
                         <div key={e.id}>
                             <input 
-                                name='deliveryMode'
+                                {...register("deliveryMode")}
                                 className='p-2 outline-none focus:ring-0' 
                                 id={e.id} 
                                 type="radio"
-                                checked={deliveryMode === e.id}
-                                onChange={()=>setDeliveryMode(e.id)}
+                                value={e.id}
+                                checked={e.id === parseInt(mode)}
+                                onChange={handleChangeMode}
+                                //defaultValue={store}
+                                
                             />
-                            <label htmlFor='deliveryMode' >{e.title}</label>
+                            <label htmlFor='' >{e.title}</label>
                         </div>
                     ))
                 }
@@ -41,7 +55,7 @@ export const ShippingForm = ({setActiveStep})=> {
             
             
                 {   
-                    deliveryMode === 1 &&
+                    mode === 1 &&
                     <div>
                         <h5>Seleccione una tienda</h5>
                         
@@ -56,7 +70,8 @@ export const ShippingForm = ({setActiveStep})=> {
                                     {'id': 3,'name': 'Plaza Lima Sur', 'address': 'Defensores del Morro'},
                                     
                                 ].map( e => (
-                                    <option value={e.id}>{e.name} - {e.address}</option>
+
+                                    <option key={e.id} value={e.id}>{e.name} - {e.address}</option>
                                 ))
                             }
                             </select>
@@ -66,7 +81,7 @@ export const ShippingForm = ({setActiveStep})=> {
             
             
             {
-                deliveryMode === 2 &&
+                mode === 2 &&
                 <div>
                     <h3>Envío a domicilio</h3>
                 </div>
