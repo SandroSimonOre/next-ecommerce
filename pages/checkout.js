@@ -45,6 +45,7 @@ export default function CheckoutPage() {
                 <div>
                     <p>Modo Entrega: {deliveryInfo.deliveryMode}</p>
                     <p>Tienda: {deliveryInfo.store}</p>
+                    <p>Fecha: {deliveryInfo.deliveryDate}</p>
                 </div>
                 <br />
             </div>

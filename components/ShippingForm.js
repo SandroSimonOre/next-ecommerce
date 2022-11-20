@@ -6,12 +6,13 @@ import { setDeliveryInfo } from '../features/cart/cartSlice';
 export const ShippingForm = ({setActiveStep})=> {
 
     const deliveryInfo = useSelector( state => state.cart.deliveryInfo);
-    const {store, deliveryMode} = deliveryInfo; 
+    const {store, deliveryMode, deliveryDate} = deliveryInfo; 
     const {register, handleSubmit} = useForm();
     const [ mode, setMode ] = useState(deliveryMode);
     const dispatch = useDispatch();
     
     const onSubmit = (data) => {
+        console.log(data)
         dispatch(setDeliveryInfo(data))
         setActiveStep(3)
     }
@@ -40,10 +41,10 @@ export const ShippingForm = ({setActiveStep})=> {
                                 className='p-2 outline-none focus:ring-0' 
                                 id={e.id} 
                                 type="radio"
-                                value={e.id}
+                                value={parseInt(e.id)}
                                 checked={e.id === parseInt(mode)}
                                 onChange={handleChangeMode}
-                                //defaultValue={store}
+                                //name=?
                                 
                             />
                             <label htmlFor='' >{e.title}</label>
@@ -55,7 +56,8 @@ export const ShippingForm = ({setActiveStep})=> {
             
             
                 {   
-                    mode === 1 &&
+                    parseInt(mode) === 1 &&
+                    <>
                     <div>
                         <h5>Seleccione una tienda</h5>
                         
@@ -77,14 +79,50 @@ export const ShippingForm = ({setActiveStep})=> {
                             </select>
                         
                     </div>
+                        <div>
+                        <label htmlFor="">DNI / Nombre del Picker (En caso vaya un tercero)</label>
+                        <input type="text" />
+                        <input type="text" />
+                    </div>
+                    </>
                 }
+
+                
             
             
             {
-                mode === 2 &&
-                <div>
-                    <h3>Envío a domicilio</h3>
-                </div>
+                parseInt(mode) === 2 &&
+                <>
+                    <div>
+                        <input
+                            {...register("deliveryDate")}
+                            type="date" 
+                            id="delivery-date" 
+                            name="deliveryDate" 
+                            defaultValue={deliveryDate}
+                        />
+                            
+                    </div>
+
+                    <div>
+                        <p>Horarios disponibles</p>
+                        {
+                            ['8.00 am - 12:00 pm', '12.00 pm - 4:00 pm', '4.00 pm - 8:00 pm'].map( e => (
+                                <>
+                                    <input 
+                                        type='radio'
+                                    />
+                                    <label>{e}</label>            
+                                </>
+                        ))}
+                        
+                    </div>
+
+                    <div>
+                        <label htmlFor="">Observaciones</label>
+                        <input type="text" />
+                    </div>
+                </>
             }
 
             <div className="mb-4 flex justify-between">
