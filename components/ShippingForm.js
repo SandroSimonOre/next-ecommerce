@@ -44,23 +44,23 @@ export const ShippingForm = ({setActiveStep})=> {
                     deliveryMode === 1 &&
                     <div>
                         <h5>Seleccione una tienda</h5>
-                        <div className='grid grid-cols-3 gap-8'>
-                            
+                        
+                            <select 
+                                {...register("store")}
+                                className='w-80'
+                            >
                             {
                                 [
-                                    {'id': 1,'name': 'La Cultura', 'address': 'Av. La Cultura'},
-                                    {'id': 2,'name': 'La Cultura', 'address': 'Av. La Cultura'},
-                                    {'id': 3,'name': 'La Cultura', 'address': 'Av. La Cultura'},
-                                    {'id': 4,'name': 'La Cultura', 'address': 'Av. La Cultura'},
-                                    {'id': 5,'name': 'La Cultura', 'address': 'Av. La Cultura'},
-                                    {'id': 6,'name': 'La Cultura', 'address': 'Av. La Cultura'}
+                                    {'id': 1,'name': 'La Cultura', 'address': 'Av. Javier Prado'},
+                                    {'id': 2,'name': 'Centro Cívico', 'address': 'Av. Abancay'},
+                                    {'id': 3,'name': 'Plaza Lima Sur', 'address': 'Defensores del Morro'},
+                                    
                                 ].map( e => (
-                                    <div key={e.id}>
-                                        <h4>{e.name}</h4>
-                                    </div>
+                                    <option value={e.id}>{e.name} - {e.address}</option>
                                 ))
                             }
-                        </div>
+                            </select>
+                        
                     </div>
                 }
             

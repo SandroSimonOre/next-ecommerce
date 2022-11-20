@@ -14,6 +14,7 @@ export default function CheckoutPage() {
     
     const [activeStep, setActiveStep] = useState(2);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
+    const identification = useSelector( state => state.cart.identification);
 
     const handleChangingStep = (step)=> {
         setActiveStep(step)
@@ -32,8 +33,15 @@ export default function CheckoutPage() {
     <Layout title="Payment Method">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
             <div className=''>
-                <h2>Summary</h2>
-                <h2>Your order detail</h2>
+                <h2>== IDENTIFICATION ==</h2>
+                <div>
+                    <p>{identification.fullName}</p>
+                    <p>{identification.city}</p>
+                    <p>{identification.address}</p>
+                    <p>{identification.postalCode}</p>
+                </div>
+                <br />
+                <h2>== SHIPPING ==</h2>
             </div>
             <div className=''>
                 <div className='flex justify-between border-2 border-red-800'>
