@@ -93,7 +93,7 @@ export default function CheckoutPage() {
                     activeStep === 3 &&
                     <div className='h-60 border-2 border-green-800'>
                         
-                        {/* <PaypalButton /> */}
+                        <PaypalButton />
                         
                     </div>
                 }

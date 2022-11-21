@@ -18,6 +18,9 @@ export default function PaypalButton() {
                 headers: {
                   "Content-Type": "application/json",
                 },
+                data: {
+                  foo: 'bar', // This is the body part
+                }
               });
               return res.data.id;
             } catch (error) {
