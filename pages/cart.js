@@ -91,7 +91,9 @@ export default function CartPage() {
                             <li>
                                 <button
                                     className="primary-button w-full" 
-                                    onClick={()=>router.push('login?redirect=/shipping')}
+                                    //onClick={()=>router.push('login?redirect=/checkout')}
+                                    //onClick={()=>router.push('checkout')}
+                                    onClick={()=>router.push('/login?redirect=/checkout')}
                                 >
                                     Check out
                                 </button>

@@ -35,9 +35,10 @@ export const ShippingForm = ({setActiveStep})=> {
                         {'id': 2, 'title': 'Envío a domicilio'}
                     ].map((e) => (
 
-                        <div key={e.id}>
+                        <div>
                             <input 
                                 {...register("deliveryMode")}
+                                key={e.id}
                                 className='p-2 outline-none focus:ring-0' 
                                 id={e.id} 
                                 type="radio"
@@ -47,7 +48,7 @@ export const ShippingForm = ({setActiveStep})=> {
                                 //name=?
                                 
                             />
-                            <label htmlFor='' >{e.title}</label>
+                            <label htmlFor={e.id} >{e.title}</label>
                         </div>
                     ))
                 }
@@ -64,6 +65,7 @@ export const ShippingForm = ({setActiveStep})=> {
                             <select 
                                 {...register("store")}
                                 className='w-80'
+                                defaultValue={store}
                             >
                             {
                                 [
@@ -106,15 +108,25 @@ export const ShippingForm = ({setActiveStep})=> {
 
                     <div>
                         <p>Horarios disponibles</p>
+                        <fieldset>
                         {
-                            ['8.00 am - 12:00 pm', '12.00 pm - 4:00 pm', '4.00 pm - 8:00 pm'].map( e => (
+                            [
+                                {'id':'M', 'shift': '8.00 am - 12:00 pm'}, 
+                                {'id':'T', 'shift': '12.00 pm - 4:00 pm'}, 
+                                {'id':'N', 'shift': '4.00 pm - 8:00 pm'}
+                            ].map( e => (
                                 <>
                                     <input 
+                                        {...register("shift")}
+                                        id={e.id}
+                                        value={e.id}
                                         type='radio'
+                                        name='shift'
                                     />
-                                    <label>{e}</label>            
+                                    <label htmlFor={e.id}>{e.shift}</label>            
                                 </>
                         ))}
+                        </fieldset>
                         
                     </div>
 

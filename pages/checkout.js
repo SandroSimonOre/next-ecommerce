@@ -12,7 +12,7 @@ import { ShippingForm } from '../components/ShippingForm';
 export default function CheckoutPage() {
 
     
-    const [activeStep, setActiveStep] = useState(2);
+    const [activeStep, setActiveStep] = useState(1);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
     const identification = useSelector( state => state.cart.identification);
     const deliveryInfo = useSelector( state => state.cart.deliveryInfo);
