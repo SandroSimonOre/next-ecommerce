@@ -19,8 +19,8 @@ export const BookCard = ({book}) => {
                         className="rounded shadow"
                         src={book.coverURL}
                         alt={book.title}
-                        width={500}
-                        height={500}
+                        width={600}
+                        height={800}
 
                     />
                 </a>
