@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 //import { Store } from "../utils/Store";
 //import DropdownLink from './DropdownLink'; // REVIEW THIS CODE
 
+
 import { useSelector } from 'react-redux';
 
 export const Layout = ({title, children}) => {
@@ -61,7 +62,10 @@ export const Layout = ({title, children}) => {
                 </header>
 
                 <main className="container m-auto mt-4 px-4">
-                    {children}
+                    
+                        {children}
+                    
+                    
                 </main>
                 
                 <footer className="flex h-10 justify-center items-center shadow-inner">

@@ -10,7 +10,7 @@ async function dbConnect() {
   }
 
   console.log('creando nueva conexion')
-  return mongoose.connect(process.env.MONGODB_URI, {
+  return mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 
