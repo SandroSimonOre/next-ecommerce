@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-//import { useContext } from "react";
 import { Layout } from "../components/Layout";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, incrementQty, decrementQty } from '../features/cart/cartSlice';
+
+import { QuantitySetter } from "../components/QuantitySetter";
 
 export default function CartPage() {
     
@@ -45,10 +46,10 @@ export default function CartPage() {
                                 {items.map( item => (
                                     <tr key= {item.id} className="border-b">
                                         <td>
-                                            <Link href={`/product/${item.slug}`}>
+                                            <Link href={`/books/${item.slug}`}>
                                                 <a className="flex items-center">
                                                     <Image
-                                                        src={item.thumbnail}
+                                                        src={item.coverURL}
                                                         alt={item.title}
                                                         width={50}
                                                         height={50}
@@ -59,18 +60,18 @@ export default function CartPage() {
                                             </Link>
                                         </td>
                                         <td /* className="p-5 text-right" */>
-                                        <div>
-                                            {   
-                                                item.quantity === 1 
-                                                    ? <button onClick={ ()=> dispatch(removeItem(item.id)) }>❌</button>
-                                                    : <button onClick={ ()=> dispatch(decrementQty(item.id))}>➖</button>
-                                            }
-                                            <span>{item.quantity}</span>
-                                            <button onClick={ ()=> dispatch(incrementQty(item.id)) }>➕</button>
-                                        </div>
+                                        <QuantitySetter
+                                            bookId={item._id}
+                                            quantity={item.quantity}
+                                            dispatch={dispatch}
+                                            removeItem={removeItem}
+                                            decrementQty={decrementQty}
+                                            incrementQty={incrementQty}
+                                        />
+
                                         </td>
-                                        <td className="p-5 text-right">${item.price}</td>
-                                        <td className="p-5 text-right">${item.price * item.quantity}</td>
+                                        <td className="p-5 text-right">${item.price.toFixed(2)}</td>
+                                        <td className="p-5 text-right">${(item.price * item.quantity).toFixed(2)}</td>
                                         
                                     </tr>
                                 ))}
@@ -85,7 +86,7 @@ export default function CartPage() {
                             <li>
                                 <div className="pb-3 text-xl">  
                                     <span>Subtotal: $</span>
-                                    {items.reduce((a, c) => a + c.quantity * c.price, 0)}
+                                    {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
                                 </div>
                             </li>
                             <li>
