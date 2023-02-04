@@ -1,9 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import { AiOutlineMinusCircle } from 'react-icons/ai';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { FaRegTrashAlt } from 'react-icons/fa'
+import { QuantitySetter } from "./QuantitySetter";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, removeItem, decrementQty, incrementQty } from '../features/cart/cartSlice';
@@ -54,27 +52,29 @@ export const BookCard = ({book}) => {
                                 <button 
                                     type="button" 
                                     className="primary-button" 
-                                    onClick={() => dispatch(addItem(/* book */
+                                    onClick={() => dispatch(addItem(
                                         {
                                             _id: book._id,
                                             quantity: 1,
                                             price: book.prices[0].price,
-                                            coverURL: book.coverURL
+                                            coverURL: book.coverURL,
+                                            format: book.prices[0].format,
+                                            slug: book.slug
                                         }                                        
                                     ))}
                                 >
                                     Add to Cart
                                 </button>
                             ) : (   <div className="flex justify-center">
-                                        {   
-                                            item.quantity === 1 
-                                                ? <button onClick={ ()=> dispatch(removeItem(book._id)) }><FaRegTrashAlt className="text-xl" /></button>
-                                                : <button onClick={ ()=> dispatch(decrementQty(book._id))}><AiOutlineMinusCircle className="text-2xl" /></button>
-                                        }
-                                        <span className="flex items-center px-3">{item.quantity}</span>
-                                        <button onClick={ ()=> dispatch(incrementQty(book._id)) }>
-                                        <AiOutlinePlusCircle className="text-2xl" />
-                                        </button>
+                                        <QuantitySetter
+                                            bookId={book._id}
+                                            format={book.prices[0].format}
+                                            quantity={item.quantity}
+                                            dispatch={dispatch}
+                                            removeItem={removeItem}
+                                            decrementQty={decrementQty}
+                                            incrementQty={incrementQty}
+                                        />
                                     </div>
                             )
                     }

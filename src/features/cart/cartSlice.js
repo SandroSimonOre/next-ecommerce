@@ -15,30 +15,25 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
-      const itemExists = state.items.find( item => action.payload._id === item._id );
-      if (!itemExists) {
-        const newItem = {...action.payload, quantity:1};
-        state.items.push(newItem);
-      }
+      const itemExists = state.items.find( item => action.payload._id === item._id && action.payload.format === item.format);
+      if (!itemExists) state.items.push(action.payload);
     },
 
     removeItem: (state, action) => {
-      //console.log(action.payload)
-      state.items = state.items.filter(item => item._id !== action.payload);
+      state.items = state.items.filter(item => item._id !== action.payload._id && action.payload.format !== item.format);
     },
 
     incrementQty: (state, action) => {
-      const item = state.items.find( item => action.payload === item._id );
+      const item = state.items.find( item => action.payload._id === item._id && action.payload.format === item.format);
       item.quantity++;
     },
 
     decrementQty: (state, action) => {
-      const item = state.items.find( item => action.payload === item._id );
+      const item = state.items.find( item => action.payload._id === item._id && action.payload.format === item.format);
       item.quantity--;
     },
 
     setShippingAddress: (state, action) => {
-      //console.log(action.payload);
       state.shippingAddress = action.payload;
     },
 

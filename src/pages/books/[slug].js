@@ -34,7 +34,7 @@ export default function BookPage() {
                 <Link href='/'>Back to books</Link>
             </div>
             <div className="grid md:grid-cols-4 md:gap-3">
-                <div className="md:col-span-2">
+                <div className="md:col-span-1">
                     <Image 
                         src={book.coverURL}
                         alt={book.title}
@@ -43,7 +43,7 @@ export default function BookPage() {
                         layout="responsive"
                     />
                 </div>
-                <div>
+                <div className="md:col-span-2">
                     <ul>
                         <li>
                             <h1 className="text-lg">{book.title}</h1>

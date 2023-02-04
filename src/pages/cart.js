@@ -14,12 +14,6 @@ export default function CartPage() {
     
     const dispatch = useDispatch();
     const items = useSelector( state => state.cart.items);
-    
-    const removeItemHandler = (id) => {
-        
-        dispatch( removeItem(id) )
-
-    }
 
     return (
         <Layout title="Shopping Cart">
@@ -35,16 +29,16 @@ export default function CartPage() {
                             <thead className="border-b">
                                 <tr>
                                     <th className="px-5 text-left">Item</th>
-                                    <th className="p-5 text-right">Quantity</th>
+                                    <th className="p-5 text-left">Format</th>
+                                    <th className="p-5 text-center">Quantity</th>
                                     <th className="p-5 text-right">Unit. Price</th>
                                     <th className="p-5 text-right">Total Price</th>
-                                    
                                 </tr>
 
                             </thead>
                             <tbody>
                                 {items.map( item => (
-                                    <tr key= {item.id} className="border-b">
+                                    <tr key= {item._id} className="border-b">
                                         <td>
                                             <Link href={`/books/${item.slug}`}>
                                                 <a className="flex items-center">
@@ -59,16 +53,19 @@ export default function CartPage() {
                                                 </a>
                                             </Link>
                                         </td>
+                                        <td>
+                                            {item.format}
+                                        </td>
                                         <td /* className="p-5 text-right" */>
-                                        <QuantitySetter
-                                            bookId={item._id}
-                                            quantity={item.quantity}
-                                            dispatch={dispatch}
-                                            removeItem={removeItem}
-                                            decrementQty={decrementQty}
-                                            incrementQty={incrementQty}
-                                        />
-
+                                            <QuantitySetter
+                                                bookId={item._id}
+                                                format={item.format}
+                                                quantity={item.quantity}
+                                                dispatch={dispatch}
+                                                removeItem={removeItem}
+                                                decrementQty={decrementQty}
+                                                incrementQty={incrementQty}
+                                            />
                                         </td>
                                         <td className="p-5 text-right">${item.price.toFixed(2)}</td>
                                         <td className="p-5 text-right">${(item.price * item.quantity).toFixed(2)}</td>
