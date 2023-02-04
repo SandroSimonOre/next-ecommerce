@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import {useEffect} from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
@@ -6,7 +5,6 @@ import { Layout } from '../components/Layout';
 import { getError } from '../utils/error';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-//import {config} from '../myapp.config'
 
 export default function LoginPage() {
 
@@ -25,7 +23,6 @@ export default function LoginPage() {
     register,
     formState: { errors },
   } = useForm();
-  //console.log('hello', config.test)
 
   const submitHandler = async ({ email, password }) => {
     
@@ -40,10 +37,8 @@ export default function LoginPage() {
       if (result.error) {
         
         toast.error(result.error);
-        //console.log('hubo un error')
-        //toast.error('Se ha producido un error.');
+        
       }
-
       
     } catch (err) {
       toast.error(getError(err));
@@ -99,11 +94,6 @@ export default function LoginPage() {
 
         <div className="mb-4 ">
           <button className="primary-button">Login</button>
-        </div>
-
-        <div className="mb-4 ">
-          Don&apos;t have an account? &nbsp;
-          <Link href={`/signup?redirect=${redirect || '/'}`}>Signup</Link>
         </div>
 
       </form>

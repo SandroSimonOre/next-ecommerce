@@ -3,8 +3,7 @@ import User from '../../../models/User';
 import dbConnect from '../../../utils/db';
 
 async function handler(req, res) {
-  const db = await  dbConnect()
-  //console.log(db)
+  
   if (req.method !== 'POST') {
     return;
   }
@@ -22,6 +21,8 @@ async function handler(req, res) {
     return;
   }
 
+  const db = await  dbConnect()
+
   const existingUser = await User.findOne({ email: email });
   if (existingUser) {
     res.status(422).json({ message: 'User exists already!' });
@@ -31,13 +32,11 @@ async function handler(req, res) {
   const newUser = new User({
     name,
     email,
-    password: bcrypt.hashSync(password, 10),
+    password: await bcrypt.hash(password, 10),
     isAdmin: false,
   });
-  //
-  //console.log(newUser.password)
+  
   const user = await newUser.save();
-  //await db.disconnect();
   res.status(201).send({
     message: 'Created user!',
     _id: user._id,

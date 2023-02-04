@@ -27,14 +27,11 @@ export default NextAuth({
 
       async authorize(credentials) {
         const db = await  dbConnect()
-        //console.log(credentials)
-        console.log('......')
         const user = await User.findOne({
           email: credentials.email,
         });
-        //console.log(user)
         
-        if (user && bcrypt.compareSync(credentials.password, user.password)) {
+        if (user && await bcrypt.compare(credentials.password, user.password)) {
           
           return {
             _id: user._id,
@@ -43,8 +40,9 @@ export default NextAuth({
             isAdmin: user.isAdmin,
           };
 
+        } else {
+          throw new Error('Invalid email or password.');
         }
-        throw new Error('Invalid email or password.');
       },
     }),
   ],

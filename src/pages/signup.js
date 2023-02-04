@@ -26,16 +26,16 @@ export default function SignupPage() {
     getValues,
     formState: { errors },
   } = useForm();
+
   const submitHandler = async ({ name, email, password }) => {
     try {
       
       await axios.post('/api/auth/signup', {
-
         name,
         email,
         password,
       });
-      console.log('Intentando registrar')
+      // console.log('Intentando registrar')
       const result = await signIn('credentials', {
         redirect: false,
         email,
@@ -135,10 +135,10 @@ export default function SignupPage() {
         <div className="mb-4 ">
           <button className="primary-button">Signup</button>
         </div>
-        <div className="mb-4 ">
+        {/* <div className="mb-4 ">
           Do you already have an account?
           <Link href={`/login?redirect=${redirect || '/'}`}>Login</Link>
-        </div>
+        </div> */}
       </form>
     </Layout>
   );
