@@ -7,13 +7,22 @@ export const QuantitySetter = ({bookId, format, quantity, dispatch, removeItem, 
     return (
         <div className="flex justify-center">
             {   
-                quantity === 1 
-                    ? <button onClick={ ()=> dispatch(removeItem(payload)) }><FaRegTrashAlt className="text-xl" /></button>
-                    : <button onClick={ ()=> dispatch(decrementQty(payload))}><AiOutlineMinusCircle className="text-2xl" /></button>
+                quantity === 1 ?
+                    (
+                        <button onClick={ ()=> dispatch(removeItem(payload)) }>
+                            <FaRegTrashAlt className="text-xl" />
+                        </button>
+                    ) : (
+                        <button onClick={ ()=> dispatch(decrementQty(payload))}>
+                            <AiOutlineMinusCircle className="text-2xl" />
+                        </button>
+                    )
             }
-            <span className="flex items-center px-3">{quantity}</span>
+            <span className="flex items-center px-3">
+                {quantity}
+            </span>
             <button onClick={ ()=> dispatch(incrementQty(payload)) }>
-            <AiOutlinePlusCircle className="text-2xl" />
+                <AiOutlinePlusCircle className="text-2xl" />
             </button>
         </div>
     )
