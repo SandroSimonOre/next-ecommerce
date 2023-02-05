@@ -2,10 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Layout } from "../../components/Layout";
-import { useSelector, useDispatch } from 'react-redux'
-import { addItem } from '../../features/cart/cartSlice';
 import { BooksContext } from '../../context/BooksContext';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { QuantitySetter } from "../../components/QuantitySetter";
+import { useSelector, useDispatch } from 'react-redux';
+import { addItem, removeItem, decrementQty, incrementQty } from '../../features/cart/cartSlice';
 
 import { GiFeather } from 'react-icons/gi'
 import { IoLibrarySharp } from 'react-icons/io5'
@@ -16,22 +17,35 @@ import { IoLanguageOutline } from 'react-icons/io5'
 
 export default function BookPage() {
 
-    // const cart = useSelector((state) => state.cart);
-    //const dispatch = useDispatch();
-    const {books} = useContext(BooksContext)
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const { books } = useContext(BooksContext)
+    const { query } = useRouter();
+    const { slug } = query;
     
-    
-    const {query} = useRouter();
-    const {slug} = query;
+    const dispatch = useDispatch();
+    const items = useSelector(state => state.cart.items);
     const book = books.find( b => b.slug === slug);
-    
+    const item = items.find(e => e._id === book._id )
+    //console.log(item)
+
+    useEffect(()=> {
+        if (item) {
+            console.log(book.prices)
+            setCurrentIndex(book.prices.findIndex(p => p.format === item.format)) 
+            console.log(item.format)
+        }
+    }, [])
+    /* const addToCartHandler = () => {
+        dispatch(addItem(book) );
+    } */
+    console.log(currentIndex)
+
     if (!book) {
         return <div>Book Not Found</div>;
     }
 
-    const addToCartHandler = () => {
-        dispatch(addItem(book) );
-        //router.push('/cart')
+    const clickHandler = (e) => {
+        setCurrentIndex(parseInt(e.currentTarget.id))
     }
 
     return (
@@ -93,7 +107,12 @@ export default function BookPage() {
                     <div className="flex gap-1 my-4">
                         {
                             book.prices.map((f, i) => (
-                                <div key={i} className="flex flex-col items-center border-solid border-2 border-grey-600 w-32 hover:cursor-pointer">
+                                <div 
+                                    key={i}
+                                    id={i}
+                                    onClick={clickHandler} 
+                                    className={`flex flex-col items-center border-solid border-2 border-${currentIndex === i ? 'blue' : 'grey'}-600 w-32 hover:cursor-pointer`}
+                                >
                                     <div>{f.format}</div>
                                     <div>$ {f.price.toFixed(2)}</div> 
                                 </div>
@@ -101,7 +120,42 @@ export default function BookPage() {
                             ))
                         }
                     </div>
-                    <button className="primary-button w-36" onClick={addToCartHandler}>Add to Cart</button>
+                    <div className="flex justify-center h-12">
+                    {
+                        item ? 
+                        (
+                            <div className="flex justify-center">
+                                <QuantitySetter
+                                    bookId={book._id}
+                                    format={book.prices[currentIndex].format}
+                                    quantity={item.quantity}
+                                    dispatch={dispatch}
+                                    removeItem={removeItem}
+                                    decrementQty={decrementQty}
+                                    incrementQty={incrementQty}
+                                />
+                            </div>
+                        ) : (   
+                                
+                                <button 
+                                    type="button" 
+                                    className="primary-button" 
+                                    onClick={() => dispatch(addItem(
+                                    {
+                                        _id: book._id,
+                                        quantity: 1,
+                                        price: book.prices[0].price,
+                                        coverURL: book.coverURL,
+                                        format: book.prices[0].format,
+                                        slug: book.slug
+                                    }                                        
+                                ))}
+                            >
+                                Add to Cart
+                                </button>
+                        )
+                    }
+                </div>
                     
                 </div>
                 <div>
