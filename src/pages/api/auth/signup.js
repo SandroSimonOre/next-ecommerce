@@ -21,7 +21,7 @@ async function handler(req, res) {
     return;
   }
 
-  const db = await  dbConnect()
+  await  dbConnect()
 
   const existingUser = await User.findOne({ email: email });
   if (existingUser) {

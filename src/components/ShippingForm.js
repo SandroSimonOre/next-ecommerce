@@ -35,10 +35,10 @@ export const ShippingForm = ({setActiveStep})=> {
                         {'id': 2, 'title': 'Envío a domicilio'}
                     ].map((e) => (
 
-                        <div>
+                        <div key={e.id}>
                             <input 
                                 {...register("deliveryMode")}
-                                key={e.id}
+                                //key={e.id}
                                 className='p-2 outline-none focus:ring-0' 
                                 id={e.id} 
                                 type="radio"
