@@ -4,6 +4,7 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 
 export const QuantitySetter = ({bookId, format, quantity, dispatch, removeItem, decrementQty, incrementQty }) => { // 
     const payload = {_id: bookId, format: format }
+    //console.log('quantity =>:', quantity)
     return (
         <div className="flex justify-center">
             {   

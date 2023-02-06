@@ -18,6 +18,7 @@ import { IoLanguageOutline } from 'react-icons/io5'
 export default function BookPage() {
 
     const [currentIndex, setCurrentIndex] = useState(0)
+    const [item, setItem] = useState(null)
     const { books } = useContext(BooksContext)
     const { query } = useRouter();
     const { slug } = query;
@@ -25,20 +26,12 @@ export default function BookPage() {
     const dispatch = useDispatch();
     const items = useSelector(state => state.cart.items);
     const book = books.find( b => b.slug === slug);
-    const item = items.find(e => e._id === book._id )
-    //console.log(item)
-
+    
     useEffect(()=> {
-        if (item) {
-            console.log(book.prices)
-            setCurrentIndex(book.prices.findIndex(p => p.format === item.format)) 
-            console.log(item.format)
+        if (items.length > 0) {
+            setItem(items.find(i => i._id == book._id && book.prices[currentIndex].format === i.format) )
         }
-    }, [])
-    /* const addToCartHandler = () => {
-        dispatch(addItem(book) );
-    } */
-    console.log(currentIndex)
+    }, [items, currentIndex])
 
     if (!book) {
         return <div>Book Not Found</div>;
@@ -73,26 +66,24 @@ export default function BookPage() {
                     </ul>
 
                     <div className="grid grid-cols-5 text-xs py-6">
-                        <div className="flex flex-col items-center justify-between gap-y-4">
+                        <div className="flex flex-col items-center justify-between px-2">
                             <p>Author(s)</p>
                             <GiFeather className="text-3xl" />
-                            <div>
-                                {
-                                    book.authors.map((a, i) => ( <p key={i}>{a}</p> ))
-                                }
-                            </div>
+                            <p className="relative whitespace-nowrap overflow-hidden text-ellipsis w-full">
+                                { book.authors.join(', ')}
+                            </p>
                         </div>
-                        <div className="flex flex-col items-center justify-between gap-y-4">
+                        <div className="flex flex-col items-center justify-between px-2">
                             <p>Publisher</p>
                             <IoLibrarySharp className="text-3xl gap-y-4" />
-                            <p>{book.publisher}</p>
+                            <p className="whitespace-nowrap overflow-hidden text-ellipsis w-full">{book.publisher}</p>
                         </div>
-                        <div className="flex flex-col items-center justify-between gap-y-4">
+                        <div className="flex flex-col items-center justify-between px-2">
                             <p>Publication date</p>
                             <TfiCalendar className="text-3xl" />
                             <p>{book.publicationDate.substring(0,10)}</p>
                         </div>
-                        <div className="flex flex-col items-center justify-between gap-y-4">
+                        <div className="flex flex-col items-center justify-between px-2">
                             <p>Pages</p>
                             <GrDocument className="text-3xl" />
                             <p>{book.pages}</p>
@@ -104,7 +95,7 @@ export default function BookPage() {
                         </div>
                     </div>
 
-                    <div className="flex gap-1 my-4">
+                    <div className="flex gap-1 my-4"> {/* Prices */}
                         {
                             book.prices.map((f, i) => (
                                 <div 
@@ -115,53 +106,51 @@ export default function BookPage() {
                                 >
                                     <div>{f.format}</div>
                                     <div>$ {f.price.toFixed(2)}</div> 
+                                    <div>{currentIndex}==={i}</div>
                                 </div>
                                 
                             ))
                         }
                     </div>
-                    <div className="flex justify-center h-12">
-                    {
-                        item ? 
-                        (
-                            <div className="flex justify-center">
-                                <QuantitySetter
-                                    bookId={book._id}
-                                    format={book.prices[currentIndex].format}
-                                    quantity={item.quantity}
-                                    dispatch={dispatch}
-                                    removeItem={removeItem}
-                                    decrementQty={decrementQty}
-                                    incrementQty={incrementQty}
-                                />
-                            </div>
-                        ) : (   
-                                
+
+                    <div className="flex justify-center h-12"> {/* Button or QS */}
+                        {
+                            item ? 
+                            (
+                                <div className="flex justify-center">
+                                    <QuantitySetter
+                                        bookId={book._id}
+                                        format={book.prices[currentIndex].format}
+                                        quantity={item.quantity}
+                                        dispatch={dispatch}
+                                        removeItem={removeItem}
+                                        decrementQty={decrementQty}
+                                        incrementQty={incrementQty}
+                                    />
+                                </div>
+                            ) : (   
+                                    
                                 <button 
                                     type="button" 
                                     className="primary-button" 
                                     onClick={() => dispatch(addItem(
-                                    {
-                                        _id: book._id,
-                                        quantity: 1,
-                                        price: book.prices[0].price,
-                                        coverURL: book.coverURL,
-                                        format: book.prices[0].format,
-                                        slug: book.slug
-                                    }                                        
-                                ))}
-                            >
-                                Add to Cart
+                                        {
+                                            _id: book._id,
+                                            quantity: 1,
+                                            price: book.prices[currentIndex].price,
+                                            coverURL: book.coverURL,
+                                            format: book.prices[currentIndex].format,
+                                            slug: book.slug
+                                        }                                        
+                                    ))}
+                                >
+                                    Add to Cart
                                 </button>
-                        )
-                    }
-                </div>
+                            )
+                        }
+                    </div>
                     
                 </div>
-                <div>
-                    
-                </div>
-                
             </div>
         </Layout>
     )   

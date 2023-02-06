@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, incrementQty, decrementQty } from '../features/cart/cartSlice';
 
 import { QuantitySetter } from "../components/QuantitySetter";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CartPage() {
     
@@ -38,7 +39,7 @@ export default function CartPage() {
                             </thead>
                             <tbody>
                                 {items.map( item => (
-                                    <tr key= {item._id} className="border-b">
+                                    <tr key= {uuidv4()} className="border-b">
                                         <td>
                                             <Link href={`/books/${item.slug}`}>
                                                 <a className="flex items-center">
@@ -75,7 +76,6 @@ export default function CartPage() {
                             </tbody>
 
                         </table>
-
                     </div>
 
                     <div className="card p-5">
