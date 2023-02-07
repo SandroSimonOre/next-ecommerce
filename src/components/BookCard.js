@@ -31,14 +31,14 @@ export const BookCard = ({book}) => {
                         </div>
                         <div className="py-0">
                             <span className="inline-block w-16">Price:</span>
-                            <span>${book.prices[0].price.toFixed(2)}</span>
+                            <span>${book.price.toFixed(2)}</span>
                         </div>
                         <div className="py-0">
                             <span className="inline-block w-16">Format:</span>
-                            <span>{book.prices[0].format}</span>
+                            <span>{book.format}</span>
                         </div>
                         <div className="py-3 flex justify-center">
-                            <span className="underline text-blue-600">{book.prices.length > 1 ? 'Click for more formats': null}</span>
+                            <span className="underline text-blue-600">Click for details...</span>
                         </div>
                     </div>
                 </a>
@@ -55,10 +55,11 @@ export const BookCard = ({book}) => {
                                     onClick={() => dispatch(addItem(
                                         {
                                             _id: book._id,
+                                            title: book.title,
                                             quantity: 1,
-                                            price: book.prices[0].price,
+                                            price: book.price,
                                             coverURL: book.coverURL,
-                                            format: book.prices[0].format,
+                                            format: book.format,
                                             slug: book.slug
                                         }                                        
                                     ))}
@@ -68,7 +69,6 @@ export const BookCard = ({book}) => {
                             ) : (   <div className="flex justify-center">
                                         <QuantitySetter
                                             bookId={book._id}
-                                            format={book.prices[0].format}
                                             quantity={item.quantity}
                                             dispatch={dispatch}
                                             removeItem={removeItem}

@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, incrementQty, decrementQty } from '../features/cart/cartSlice';
 
 import { QuantitySetter } from "../components/QuantitySetter";
-import { v4 as uuidv4 } from 'uuid';
 
 export default function CartPage() {
     
@@ -19,89 +18,76 @@ export default function CartPage() {
     return (
         <Layout title="Shopping Cart">
             <h1 className="mb-4 text-xl">Shopping Cart</h1>
-            {items.length === 0 ? (
-                <div>
-                    Cart is empty. <Link href='/'>Go shopping</Link>
-                </div>
-            ) : (
-                <div className="grid md:grid-cols-4 md:gap-5">
-                    <div className="overflow-x-auto md:col-span-3">
-                        <table className="min-w-full">
-                            <thead className="border-b">
-                                <tr>
-                                    <th className="px-5 text-left">Item</th>
-                                    <th className="p-5 text-left">Format</th>
-                                    <th className="p-5 text-center">Quantity</th>
-                                    <th className="p-5 text-right">Unit. Price</th>
-                                    <th className="p-5 text-right">Total Price</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                {items.map( item => (
-                                    <tr key= {uuidv4()} className="border-b">
-                                        <td>
-                                            <Link href={`/books/${item.slug}`}>
+            <div className="flex">
+                {items.length === 0 ? (
+                    <div className="w-3/4">
+                        Cart is empty. <Link href='/'>Go shopping</Link>
+                    </div>
+                ) : (
+                        
+                        <div className="flex flex-col w-3/4 gap-y-4">
+                            <div className="grid grid-cols-12 border-y-4 border-grey-600">
+                                <span className="col-span-1">Item</span>
+                                <span className="col-span-5">Detail</span>
+                                <span className="col-span-3 text-center">Quantity</span>
+                                <span className="col-span-2 text-center">Total</span>
+                                <span className="col-span-1">Action</span>
+                            </div>
+                            {
+                                items.map(i => (
+                                    <div key= {i._id} className="grid grid-cols-12 border-b-2 border-grey-600">
+                                        <span className="col-span-1">
+                                            <Link href={`/books/${i.slug}`}>
                                                 <a className="flex items-center">
                                                     <Image
-                                                        src={item.coverURL}
-                                                        alt={item.title}
-                                                        width={50}
-                                                        height={50}
-                                                    ></Image>
-                                                    &nbsp;
-                                                    {item.title}
+                                                        src={i.coverURL}
+                                                        alt={i.title}
+                                                        width={40}
+                                                        height={60}
+                                                    />
                                                 </a>
                                             </Link>
-                                        </td>
-                                        <td>
-                                            {item.format}
-                                        </td>
-                                        <td /* className="p-5 text-right" */>
+                                        </span>
+                                    
+                                        <span className="col-span-5">
+                                            <p className="whitespace-nowrap overflow-hidden text-ellipsis w-full">{i.title}</p>
+                                            <p>{i.format}</p>
+                                            <p>$ {i.price.toFixed(2)}</p>
+                                        </span>
+
+                                        <span className="col-span-3">
                                             <QuantitySetter
-                                                bookId={item._id}
-                                                format={item.format}
-                                                quantity={item.quantity}
+                                                bookId={i._id}
+                                                quantity={i.quantity}
                                                 dispatch={dispatch}
                                                 removeItem={removeItem}
                                                 decrementQty={decrementQty}
                                                 incrementQty={incrementQty}
                                             />
-                                        </td>
-                                        <td className="p-5 text-right">${item.price.toFixed(2)}</td>
-                                        <td className="p-5 text-right">${(item.price * item.quantity).toFixed(2)}</td>
-                                        
-                                    </tr>
-                                ))}
-                            </tbody>
+                                        </span>
 
-                        </table>
-                    </div>
+                                        <span className="col-span-2 text-right pr-8">
+                                            ${(i.price * i.quantity).toFixed(2)}
+                                        </span>
 
-                    <div className="card p-5">
-                        <ul>
-                            <li>
-                                <div className="pb-3 text-xl">  
-                                    <span>Subtotal: $</span>
-                                    {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
-                                </div>
-                            </li>
-                            <li>
-                                <button
-                                    className="primary-button w-full" 
-                                    //onClick={()=>router.push('login?redirect=/checkout')}
-                                    //onClick={()=>router.push('checkout')}
-                                    onClick={()=>router.push('/login?redirect=/checkout')}
-                                >
-                                    Check out
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            )
+                                        <span 
+                                            className="col-span-1 cursor-pointer text-red-600 font-bold" 
+                                            onClick={()=> dispatch(removeItem({_id: i._id}))}
+                                        >
+                                                Remove
+                                        </span>
+                                    </div>
+                                ))
+                            }
 
-            }
+                        </div>
+                )
+
+                }
+                <div className="w-1/4">
+                
+                </div>    
+            </div>
         </Layout>
     )
 }

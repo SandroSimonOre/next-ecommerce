@@ -15,22 +15,21 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
-      const itemExists = state.items.find( item => action.payload._id === item._id && action.payload.format === item.format);
+      const itemExists = state.items.find( item => action.payload._id === item._id );
       if (!itemExists) state.items.push(action.payload);
     },
 
     removeItem: (state, action) => {
-      state.items = state.items.filter(item => item._id !== action.payload._id && action.payload.format !== item.format);
+      state.items = state.items.filter(item => item._id !== action.payload._id );
     },
 
     incrementQty: (state, action) => {
-      const item = state.items.find( item => action.payload._id === item._id && action.payload.format === item.format);
-      //console.log(item)
+      const item = state.items.find( item => action.payload._id === item._id );
       item.quantity++;
     },
 
     decrementQty: (state, action) => {
-      const item = state.items.find( item => action.payload._id === item._id && action.payload.format === item.format);
+      const item = state.items.find( item => action.payload._id === item._id );
       item.quantity--;
     },
 
@@ -47,7 +46,6 @@ export const cartSlice = createSlice({
     },
 
     setIdentification: (state, action) => {
-      //console.log(action.payload);
       state.identification = action.payload;
     },
 

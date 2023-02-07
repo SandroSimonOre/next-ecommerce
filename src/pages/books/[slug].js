@@ -13,11 +13,11 @@ import { IoLibrarySharp } from 'react-icons/io5'
 import { TfiCalendar } from 'react-icons/tfi'
 import { GrDocument } from 'react-icons/gr'
 import { IoLanguageOutline } from 'react-icons/io5'
+import { FaRegFileAudio } from 'react-icons/fa'
 
 
 export default function BookPage() {
 
-    const [currentIndex, setCurrentIndex] = useState(0)
     const [item, setItem] = useState(null)
     const { books } = useContext(BooksContext)
     const { query } = useRouter();
@@ -28,17 +28,13 @@ export default function BookPage() {
     const book = books.find( b => b.slug === slug);
     
     useEffect(()=> {
-        if (items.length > 0) {
-            setItem(items.find(i => i._id == book._id && book.prices[currentIndex].format === i.format) )
-        }
-    }, [items, currentIndex])
+        if (items) {
+            setItem(items.find(i => i._id === book._id ) )
+        } 
+    }, [items])
 
     if (!book) {
         return <div>Book Not Found</div>;
-    }
-
-    const clickHandler = (e) => {
-        setCurrentIndex(parseInt(e.currentTarget.id))
     }
 
     return (
@@ -57,60 +53,54 @@ export default function BookPage() {
                     />
                 </div>
                 <div className="md:col-span-2">
-                    <ul>
-                        <li>
-                            <h1 className="text-xl font-bold">{book.title}</h1>
-                        </li>
-                        <li>{book.authors.join(', ')}</li>
-                        <span>{'⭐'.repeat(book.stars)}</span>
-                    </ul>
+                    <div>
+                        <h1 className="text-xl font-bold">{book.title}</h1>
+                        <p>{book.authors.join(', ')}</p>
+                        <p>{'⭐'.repeat(book.stars)}</p>
+                    </div>
 
-                    <div className="grid grid-cols-5 text-xs py-6">
-                        <div className="flex flex-col items-center justify-between px-2">
+                    <div className="grid grid-cols-3 grid-rows-2 gap-y-8 text-xs py-6">
+                        <div className="flex flex-col items-center justify-between px-8">
                             <p>Author(s)</p>
                             <GiFeather className="text-3xl" />
-                            <p className="relative whitespace-nowrap overflow-hidden text-ellipsis w-full">
-                                { book.authors.join(', ')}
-                            </p>
+                            <div className="w-full">
+                                <p className="relative whitespace-nowrap overflow-hidden text-ellipsis w-full">
+                                    { book.authors.join(', ')}
+                                </p>
+                            </div>
                         </div>
-                        <div className="flex flex-col items-center justify-between px-2">
-                            <p>Publisher</p>
-                            <IoLibrarySharp className="text-3xl gap-y-4" />
-                            <p className="whitespace-nowrap overflow-hidden text-ellipsis w-full">{book.publisher}</p>
-                        </div>
-                        <div className="flex flex-col items-center justify-between px-2">
-                            <p>Publication date</p>
-                            <TfiCalendar className="text-3xl" />
-                            <p>{book.publicationDate.substring(0,10)}</p>
-                        </div>
-                        <div className="flex flex-col items-center justify-between px-2">
+                        <div className="flex flex-col items-center justify-between px-8">
                             <p>Pages</p>
                             <GrDocument className="text-3xl" />
                             <p>{book.pages}</p>
                         </div>
-                        <div className="flex flex-col items-center justify-between gap-y-3">
+                        <div className="flex flex-col items-center justify-between gap-y-3 px-8">
+                            <p>Format</p>
+                            <FaRegFileAudio className="text-3xl" />
+                            <p>{book.format}</p>
+                        </div>
+                        <div className="flex flex-col items-center justify-between px-8">
+                            <p>Publisher</p>
+                            <IoLibrarySharp className="text-3xl gap-y-4" />
+                            <div className="w-full">
+                                <p className="whitespace-nowrap overflow-hidden text-ellipsis">
+                                    {book.publisher}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center justify-between px-8">
+                            <p>Publication date</p>
+                            <TfiCalendar className="text-3xl" />
+                            <p>{book.publicationDate.substring(0,10)}</p>
+                        </div>
+                        
+                        <div className="flex flex-col items-center justify-between gap-y-3 px-8">
                             <p>Language</p>
                             <IoLanguageOutline className="text-3xl" />
                             <p>{book.language}</p>
                         </div>
-                    </div>
-
-                    <div className="flex gap-1 my-4"> {/* Prices */}
-                        {
-                            book.prices.map((f, i) => (
-                                <div 
-                                    key={i}
-                                    id={i}
-                                    onClick={clickHandler} 
-                                    className={`flex flex-col items-center border-solid border-2 border-${currentIndex === i ? 'blue' : 'grey'}-600 w-32 hover:cursor-pointer`}
-                                >
-                                    <div>{f.format}</div>
-                                    <div>$ {f.price.toFixed(2)}</div> 
-                                    <div>{currentIndex}==={i}</div>
-                                </div>
-                                
-                            ))
-                        }
+                        
+                        
                     </div>
 
                     <div className="flex justify-center h-12"> {/* Button or QS */}
@@ -120,7 +110,6 @@ export default function BookPage() {
                                 <div className="flex justify-center">
                                     <QuantitySetter
                                         bookId={book._id}
-                                        format={book.prices[currentIndex].format}
                                         quantity={item.quantity}
                                         dispatch={dispatch}
                                         removeItem={removeItem}
@@ -137,9 +126,10 @@ export default function BookPage() {
                                         {
                                             _id: book._id,
                                             quantity: 1,
-                                            price: book.prices[currentIndex].price,
+                                            title: book.title,
+                                            price: book.price,
                                             coverURL: book.coverURL,
-                                            format: book.prices[currentIndex].format,
+                                            format: book.format,
                                             slug: book.slug
                                         }                                        
                                     ))}
