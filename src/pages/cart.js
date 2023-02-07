@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Layout } from "../components/Layout";
 
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, incrementQty, decrementQty } from '../features/cart/cartSlice';
+import { removeItem, incrementQty, decrementQty, emptyCart } from '../features/cart/cartSlice';
 
 import { QuantitySetter } from "../components/QuantitySetter";
 
@@ -17,15 +17,15 @@ export default function CartPage() {
 
     return (
         <Layout title="Shopping Cart">
-            <h1 className="mb-4 text-xl">Shopping Cart</h1>
-            <div className="flex">
+            <h1 className="mb-4 text-xl mx-16">Shopping Cart</h1>
+            <div className="flex flex-col mx-16">
                 {items.length === 0 ? (
                     <div className="w-3/4">
                         Cart is empty. <Link href='/'>Go shopping</Link>
                     </div>
                 ) : (
                         
-                        <div className="flex flex-col w-3/4 gap-y-4">
+                        <div className="flex flex-col w-full gap-y-4">
                             <div className="grid grid-cols-12 border-y-4 border-grey-600">
                                 <span className="col-span-1">Item</span>
                                 <span className="col-span-5">Detail</span>
@@ -80,45 +80,52 @@ export default function CartPage() {
                                 ))
                             }
 
+                            <div className="grid grid-cols-12 border-double border-b-8 border-grey-600 pb-2">
+                                <span className="col-span-9 text-right font-bold">
+                                    Total
+                                </span>
+                                <span className="col-span-2 text-right pr-8 font-bold">
+                                    $ {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
+                                </span>
+                            </div>
+
                         </div>
                 )
 
                 }
-                <div className="w-1/4 flex flex-col border-2 ml-16 p-8">
-                    <div>
-                        <h2 className="font-bold h-10">Summary Purchase</h2>
-                    </div>
-                    <div className="grid grid-cols-2 h-8">
-                        <span>Subtotal:</span>
-                        <span className="text-right">
-                            {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
-                        </span>
-                    </div>
-                    <div className="grid grid-cols-2 h-8">
-                        <span>Shipment:</span>
-                        <span className="text-right">0.00</span>
-                    </div>
-                    <div className="grid grid-cols-2 h-8">
-                        <span>Taxes:</span>
-                        <span className="text-right">0.00</span>
-                    </div>
-                    <div className="grid grid-cols-2 h-8 border-t-2 font-bold">
-                        <span>Total:</span>
-                        <span className="text-right">
-                            $ {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
-                        </span>
-                    </div>
-                    <div className="my-4">
-                        <button
-                            className="primary-button w-full" 
-                            //onClick={()=>router.push('login?redirect=/checkout')}
-                            //onClick={()=>router.push('checkout')}
-                            onClick={()=>router.push('/login?redirect=/checkout')}
-                        >
-                                    Check out
+
+                <div className="flex w-1/2 mx-auto mt-12">
+                    <div className="mx-2">
+                        <button className="secondary-button" onClick={()=>router.push('/')}>
+                            {items.length > 0 ? "Continue shopping" : "Go Shopping"}
                         </button>
                     </div>
-                </div>    
+                    <div className="mx-2">
+                        {
+                            items.length > 0 &&
+                                <button 
+                                    className="secondary-button" 
+                                    onClick={()=> dispatch(emptyCart())}
+                                >
+                                    Empty Cart
+                                </button>
+                        }
+                        
+                    </div>
+                    <div className="mx-2">
+                        {
+                            items.length > 0 && 
+                            <button 
+                                className="primary-button"
+                                onClick={()=>router.push('/login?redirect=/checkout')}
+                            >
+                                Checkout
+                            </button>
+                        }
+                    </div>
+                    
+                </div>
+                    
             </div>
         </Layout>
     )

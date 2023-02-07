@@ -33,6 +33,10 @@ export const cartSlice = createSlice({
       item.quantity--;
     },
 
+    emptyCart: (state, action) => {
+      state.items = []
+    },
+
     setShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
     },
@@ -61,6 +65,7 @@ export const {
   removeItem,
   incrementQty, 
   decrementQty, 
+  emptyCart,
   setShippingAddress,
   setPaymentMethod,
   clearCartItems,
