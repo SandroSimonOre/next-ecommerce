@@ -30,7 +30,7 @@ export default function CartPage() {
                                 <span className="col-span-1">Item</span>
                                 <span className="col-span-5">Detail</span>
                                 <span className="col-span-3 text-center">Quantity</span>
-                                <span className="col-span-2 text-center">Total</span>
+                                <span className="col-span-2 text-center">Total $</span>
                                 <span className="col-span-1">Action</span>
                             </div>
                             {
@@ -67,7 +67,7 @@ export default function CartPage() {
                                         </span>
 
                                         <span className="col-span-2 text-right pr-8">
-                                            ${(i.price * i.quantity).toFixed(2)}
+                                            {(i.price * i.quantity).toFixed(2)}
                                         </span>
 
                                         <span 
@@ -84,8 +84,40 @@ export default function CartPage() {
                 )
 
                 }
-                <div className="w-1/4">
-                
+                <div className="w-1/4 flex flex-col border-2 ml-16 p-8">
+                    <div>
+                        <h2 className="font-bold h-10">Summary Purchase</h2>
+                    </div>
+                    <div className="grid grid-cols-2 h-8">
+                        <span>Subtotal:</span>
+                        <span className="text-right">
+                            {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
+                        </span>
+                    </div>
+                    <div className="grid grid-cols-2 h-8">
+                        <span>Shipment:</span>
+                        <span className="text-right">0.00</span>
+                    </div>
+                    <div className="grid grid-cols-2 h-8">
+                        <span>Taxes:</span>
+                        <span className="text-right">0.00</span>
+                    </div>
+                    <div className="grid grid-cols-2 h-8 border-t-2 font-bold">
+                        <span>Total:</span>
+                        <span className="text-right">
+                            $ {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
+                        </span>
+                    </div>
+                    <div className="my-4">
+                        <button
+                            className="primary-button w-full" 
+                            //onClick={()=>router.push('login?redirect=/checkout')}
+                            //onClick={()=>router.push('checkout')}
+                            onClick={()=>router.push('/login?redirect=/checkout')}
+                        >
+                                    Check out
+                        </button>
+                    </div>
                 </div>    
             </div>
         </Layout>

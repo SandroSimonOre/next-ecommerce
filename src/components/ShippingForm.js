@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDeliveryInfo } from '../../features/cart/cartSlice';
+import { setDeliveryInfo } from '../features/cart/cartSlice';
 
 export const ShippingForm = ({setActiveStep})=> {
 
