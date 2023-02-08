@@ -25,8 +25,8 @@ export default function CartPage() {
                     </div>
                 ) : (
                         
-                        <div className="flex flex-col w-full gap-y-4">
-                            <div className="grid grid-cols-12 border-y-4 border-grey-600">
+                        <div className="flex flex-col w-full">
+                            <div className="grid grid-cols-12 border-y-2 h-12 border-gray-200 font-bold items-center">
                                 <span className="col-span-1">Item</span>
                                 <span className="col-span-5">Detail</span>
                                 <span className="col-span-3 text-center">Quantity</span>
@@ -35,7 +35,7 @@ export default function CartPage() {
                             </div>
                             {
                                 items.map(i => (
-                                    <div key= {i._id} className="grid grid-cols-12 border-b-2 border-grey-600">
+                                    <div key= {i._id} className="grid grid-cols-12 even:bg-gray-100 items-center py-1">
                                         <span className="col-span-1">
                                             <Link href={`/books/${i.slug}`}>
                                                 <a className="flex items-center">
@@ -49,13 +49,13 @@ export default function CartPage() {
                                             </Link>
                                         </span>
                                     
-                                        <span className="col-span-5">
+                                        <span className="col-span-5"> {/** Detail */}
                                             <p className="whitespace-nowrap overflow-hidden text-ellipsis w-full">{i.title}</p>
                                             <p>{i.format}</p>
                                             <p>$ {i.price.toFixed(2)}</p>
                                         </span>
 
-                                        <span className="col-span-3">
+                                        <span className="col-span-3"> {/** Quantity */}
                                             <QuantitySetter
                                                 bookId={i._id}
                                                 quantity={i.quantity}
@@ -80,7 +80,7 @@ export default function CartPage() {
                                 ))
                             }
 
-                            <div className="grid grid-cols-12 border-double border-b-8 border-grey-600 pb-2">
+                            <div className="grid grid-cols-12 border-double border-t-8 border-grey-600 pt-2">
                                 <span className="col-span-9 text-right font-bold">
                                     Total
                                 </span>

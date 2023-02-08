@@ -17,185 +17,297 @@ import { setIdentification } from '../features/cart/cartSlice';
 
 export default function CheckoutPage() {
 
-    const [ editingShipping, setEditingShipping ] = useState(true)
+    const [ shippingReadOnly, setShippingReadOnly ] = useState(false)
+    const [ deliveryReadOnly, setDeliveryReadOnly ] = useState(false)
 
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
     const deliveryInfo = useSelector( state => state.cart.deliveryInfo);
 
-    const {register, handleSubmit, formState: { errors }} = useForm();
+    const {
+            register: registerShipping, 
+            handleSubmit: handleSubmitShipping, 
+            formState: { errors: errorsShipping }
+    } = useForm();
+
+    const {
+        register: registerDelivery, 
+        handleSubmit: handleSubmitDelivery, 
+        formState: { errors: errorsDelivery }
+    } = useForm();
+
+
     const dispatch = useDispatch();
     const identification = useSelector( state => state.cart.identification);
+    const items = useSelector( state => state.cart.items)
     const {firstName, lastName, city, address, postalCode} = identification; 
 
     /* const handleChangingStep = (step)=> {
         setActiveStep(step)
     } */
 
-    const onSubmitShipping = (e) => {
-        //e.preventDefault();
-        //setActiveStep(2)
+    const onSubmitShipping = () => {
+        setShippingReadOnly(true)
     };
 
-    const onSubmitDelivery = (e) => {
-        //e.preventDefault();
-        //setActiveStep(2)
+    const onSubmitDelivery = () => {
+        setDeliveryReadOnly(true)
     };
 
     return (
     <Layout title="Payment Method">
     
         <div className="flex gap-4 mx-auto w-4/5 mt-8">
-            <div className="w-2/3"> { /* Steps */}
-    
-                <div className='flex justify-between border-2 mb-6 px-8 relative'>
+            { /* Steps */}
+            <div className="w-2/3">
+                
+                {/** YOUR ITEMS */}
+                <div className='flex justify-between border-2 mb-6 relative group'>
                     <h3 className='mx-auto'>Order detail</h3>
-                    <div className='absolute invisible'>
-                        <p>Item 1</p>
-                        <p>Item 2</p>
-                        <p>Item 3</p>
+                    <div className='absolute invisible group-hover:visible top-8 z-10 bg-white text-sm border-2'>
+                    
+                        <div  className="grid grid-cols-12 items-center px-2 bg-gray-200">
+                            <span className="col-span-7">Detail</span>
+                            <span className="col-span-2">Format</span>
+                            <span className="">Qty</span>
+                            <span className="">Price</span>
+                            <span className="text-right pr-8">Subtotal</span>
+                        </div>
+                    
+                        {
+                            items.map(i => (
+                                <div key= {i._id} className="grid grid-cols-12 items-center px-2">
+                                    
+                                    <span className="col-span-7"> {/** Detail */}
+                                        <p className="whitespace-nowrap overflow-hidden text-ellipsis w-full">{i.title}</p>
+                                        
+                                    </span>
+                                    <span className="col-span-2"> {/** Format */}
+                                        <p>{i.format}</p>
+                                    </span>
+
+                                    <span className="text-right"> {/** Quantity */}
+                                        {i.quantity}
+                                    </span>
+                                    <span className="text-right"> {/** Unit. Price */}
+                                    {i.price.toFixed(2)}
+                                    </span>
+
+                                    <span className="text-right">
+                                        {(i.price * i.quantity).toFixed(2)}
+                                    </span>
+
+                                    
+                                </div>
+                            ))
+                        }
                     </div>
                     
                 </div>
 
                 {/* SHIPPING */}
                 <div className='flex flex-col justify-between border-2 py-4 px-8 mb-8'>
-                    <h3>Shipping</h3>
+                    <h3 className="text-2xl font-bold mb-3">1. Shipping info</h3>
                     <form 
                         className="grid grid-cols-2 gap-4"
-                        onSubmit={handleSubmit(onSubmitShipping)}
+                        onSubmit={handleSubmitShipping(onSubmitShipping)}
                     >   
-                        
-                        <div className="mb-4"> {/** First Name */}
+                        {/** First Name */}
+                        <div className="mb-4"> 
                             <input
-                                readOnly={editingShipping}
-                                className='w-full'
+                                readOnly={shippingReadOnly}
+                                disabled={shippingReadOnly}
+                                className="w-full focus:ring-0"
                                 id="firstName"
                                 placeholder="First Name"
-                                {...register("firstName", {
+                                {...registerShipping("firstName", {
                                     required : 'Please enter first name.',
                                     maxLength: 20})
                                 }
                                 defaultValue={firstName}
                             />
-                            <div className="text-red-500">{errors?.firstName?.message}</div>
+                            <div className="text-red-500">{errorsShipping?.firstName?.message}</div>
                         </div>
-
-                        <div> {/** Last Name */}
+                        
+                        {/** Last Name */}
+                        <div> 
                             <input
-                                className='w-full'
+                                readOnly={shippingReadOnly}
+                                disabled={shippingReadOnly}
+                                className="w-full focus:ring-0"
                                 id="lastName"
                                 placeholder="Last Name"
-                                {...register("lastName", {
+                                {...registerShipping("lastName", {
                                     required : 'Please enter last name.',
                                     maxLength: 20})
                                 }
                                 defaultValue={lastName}
                             />
-                            <div className="text-red-500">{errors?.lastName?.message}</div>
+                            <div className="text-red-500">{errorsShipping?.lastName?.message}</div>
 
                         </div>
 
-                        <div className="mb-4 w-full col-span-2"> {/** Address */}
+                        {/** Address */}
+                        <div className="mb-4 w-full col-span-2"> 
                             <input
-                                className='w-full'
+                                readOnly={shippingReadOnly}
+                                disabled={shippingReadOnly}
+                                className="w-full focus:ring-0"
                                 id='address'
                                 placeholder='Address' 
-                                {...register("address", {
+                                {...registerShipping("address", {
                                     required:'Please enter your address.',
                                     maxLength: 20 
                                 })} 
                                 defaultValue={address}
                             />
-                            {errors.address && (
-                                <div className="text-red-500">{errors.address.message}</div>
+                            {errorsShipping.address && (
+                                <div className="text-red-500">{errorsShipping?.address?.message}</div>
                             )}
                         </div>
-                    
-                        <div className="mb-4"> {/** City */}
-                                <input
-                                    className='w-full'
-                                    {...register("city", {
-                                        required:'Please enter your city.',
-                                        maxLength: 20
-                                    })}
-                                    placeholder='City'
-                                    defaultValue={city}
-                                />
-                                {errors.city && (
-                                    <div className="text-red-500">{errors.city.message}</div>
-                                )}
+                        
+                        {/** City */}
+                        <div className="mb-4"> 
+                            <input
+                                className="w-full focus:ring-0"
+                                readOnly={shippingReadOnly}
+                                disabled={shippingReadOnly}
+                                {...registerShipping("city", {
+                                    required:'Please enter your city.',
+                                    maxLength: 20
+                                })}
+                                placeholder='City'
+                                defaultValue={city}
+                            />
+                            {errorsShipping.city && (
+                                <div className="text-red-500">{errorsShipping.city.message}</div>
+                            )}
                         </div>
 
-                        <div className="mb-4"> {/** Postal Code */}
+                        {/** Postal Code */}
+                        <div className="mb-4"> 
                             <input
-                                className='w-full'
+                                readOnly={shippingReadOnly}
+                                disabled={shippingReadOnly}
+                                className="w-full focus:ring-0"
                                 placeholder='Postal Code'
-                                {...register("postalCode", {
+                                {...registerShipping("postalCode", {
                                     required: 'Please enter your postal code.'
                                 })}
                                 defaultValue={postalCode}
                             />
-                            {errors.postalCode && (
-                                <div className="text-red-500">{errors.postalCode.message}</div>
+                            {errorsShipping.postalCode && (
+                                <div className="text-red-500">{errorsShipping.postalCode.message}</div>
                             )}
                         </div>
 
-                        <div> {/** Edit */}
-                            <a className='underline color text-blue-600' href="#">Edit</a>
+                        {/** Edit */}
+                        <div>
+                            {
+                                shippingReadOnly && 
+                                    <span 
+                                        className='underline color text-blue-600 cursor-pointer col-span-1'
+                                        onClick={()=> setShippingReadOnly(false)}
+                                    >
+                                        Edit
+                                    </span>
+                                    
+                            }
                         </div>
                         
-                        <div className='mb-4 flex justify-end'> {/** Button continue */}
-                            <button className='primary-button'>Continue</button>
+                        {/** Button continue */}
+                        <div className='mb-4 flex justify-end'>
+                            <button
+                                className='secondary-button'
+                                disabled={false}
+                            >
+                                    Continue
+                            </button>
                         </div>
                     
                     </form>
-
                 </div>
                                     
                 {/** DELIVERY */}
                 <div className='flex flex-col justify-between border-2 py-4 px-8 mb-8'>
-                    <h3>Delivery</h3>
+                    <h3 className="text-2xl font-bold mb-3">2. Delivery mode</h3>
                     <form 
                         className="grid grid-cols-2 gap-4"
-                        onSubmit={handleSubmit(onSubmitDelivery)}
+                        onSubmit={handleSubmitDelivery(onSubmitDelivery)}
                     >   
                         
-                        <div className='flex col-span-2 border-2 rounded-lg p-3'>
+                        <div className='flex col-span-2 border-2 rounded-lg p-3 mb-4'>
                             <input
-                                className='text-left'
+                                disabled={deliveryReadOnly}
+                                className="focus:ring-0"
                                 name='deliveryMode' 
                                 id='express'
                                 type="radio" 
+                                {...registerDelivery("deliveryMode")}
                             />
-                            <label className='ml-3' htmlFor="express">Express</label>
+                            <label 
+                                className={`ml-3 ${deliveryReadOnly ? 'text-gray-400': ''}`} 
+                                htmlFor="express"
+                            >
+                                Express
+                            </label>
                         </div>
 
-                        <div className='flex col-span-2 border-2 rounded-lg p-3'>
+                        <div className='flex col-span-2 border-2 rounded-lg p-3 mb-4'>
                             <input 
-                                className=''
+                                disabled={deliveryReadOnly}
+                                className="focus:ring-0"
                                 name='deliveryMode'
-                                id='normal' 
+                                id='standard' 
                                 type="radio" 
+                                {...registerDelivery("deliveryMode")}
                             />
-                            <label className='ml-3' htmlFor="standard">Standard <span>2 hours </span><span>$ 5.00 </span> </label>
+                            <label 
+                                className={`ml-3 ${deliveryReadOnly ? 'text-gray-400': ''}`} 
+                                htmlFor="standard"
+                            >
+                                Standard <span>2 hours </span><span>$ 5.00 </span>
+                            </label>
                         </div>
 
-                        <div className='flex col-span-2 border-2 rounded-lg p-3'>
+                        <div className='flex col-span-2 border-2 rounded-lg p-3 mb-4'>
                             <input 
-                                className=''
+                                disabled={deliveryReadOnly}
+                                className="focus:ring-0"
                                 name='deliveryMode'
                                 id='economic' 
                                 type="radio" 
+                                {...registerDelivery("deliveryMode")}
                             />
-                            <label className='ml-3' htmlFor="economic">Economic</label>
+                            <label 
+                                className={`ml-3 ${deliveryReadOnly ? 'text-gray-400': ''}`} 
+                                htmlFor="economy"
+                            >
+                                Economy
+                            </label>
                         </div>
                         
-                        <div> {/** Edit */}
-                            <a className='underline color text-blue-600' href="#">Edit</a>
+                        {/** Edit */}
+                        <div>
+                            {
+                                deliveryReadOnly && 
+                                    <span 
+                                        className='underline color text-blue-600 cursor-pointer col-span-1'
+                                        onClick={()=> setDeliveryReadOnly(false)}
+                                    >
+                                        Edit
+                                    </span>
+                                    
+                            }
                         </div>
                         
-                        <div className='mb-4 flex justify-end'> {/** Button continue */}
-                            <button className='primary-button'>Continue</button>
+                        {/** Button continue */}
+                        <div className='mb-4 flex justify-end'>
+                            <button
+                                className='secondary-button'
+                                disabled={false}
+                            >
+                                    Continue
+                            </button>
                         </div>
                     
                     </form>
@@ -203,8 +315,9 @@ export default function CheckoutPage() {
                 </div>
                 
             </div>
-
-            <div className="w-1/3 px-8"> {/* Order Summary */}
+            
+            {/* Order Summary */}
+            <div className="w-1/3 p-8 border-2 h-fit sticky top-4"> 
                 <h2 className="font-bold h-12 text-2xl">Order Summary</h2>
                 
                 <div className="flex justify-between h-8">
