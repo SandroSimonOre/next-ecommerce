@@ -45,10 +45,6 @@ export const cartSlice = createSlice({
       state.paymentMethod = action.payload;
     },
 
-    clearCartItems: (state) => {
-      state.items = [];
-    },
-
     setIdentification: (state, action) => {
       state.identification = action.payload;
     },
