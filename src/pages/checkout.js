@@ -1,27 +1,10 @@
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-//import { useForm } from 'react-hook-form';
-//import Cookies from 'js-cookie';
-import PaypalButton from '../components/PaypalButton';
 import { Layout } from '../components/Layout';
-import { setPaymentMethod } from '../features/cart/cartSlice';
-import { IdentificationForm } from '../components/IdentificationForm';
-import { ShippingForm } from '../components/ShippingForm';
-
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import { setIdentification } from '../features/cart/cartSlice';
-
-
+import { setShippingInfo, setDeliveryMode } from '../features/cart/cartSlice';
 
 export default function CheckoutPage() {
-
-    const [ shippingReadOnly, setShippingReadOnly ] = useState(false)
-    const [ deliveryReadOnly, setDeliveryReadOnly ] = useState(false)
-
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(0);
-    const deliveryInfo = useSelector( state => state.cart.deliveryInfo);
 
     const {
             register: registerShipping, 
@@ -37,21 +20,32 @@ export default function CheckoutPage() {
 
 
     const dispatch = useDispatch();
-    const identification = useSelector( state => state.cart.identification);
+    const shippingInfo = useSelector(state => state.cart.shippingInfo);
+    const deliveryMode = useSelector(state => state.cart.deliveryMode);
     const items = useSelector( state => state.cart.items)
-    const {firstName, lastName, city, address, postalCode} = identification; 
+    
+    const {firstName, lastName, city, address, postalCode} = shippingInfo; 
+    
+    const [ shippingReadOnly, setShippingReadOnly ] = useState(Object.keys(shippingInfo).length > 0)
+    const [ deliveryReadOnly, setDeliveryReadOnly ] = useState(deliveryMode !== "")
 
-    /* const handleChangingStep = (step)=> {
-        setActiveStep(step)
-    } */
-
-    const onSubmitShipping = () => {
+    const onSubmitShipping = data => {
+        //console.log(data)
+        dispatch(setShippingInfo(data))
         setShippingReadOnly(true)
     };
 
-    const onSubmitDelivery = () => {
+    const onSubmitDelivery = data => {
+        //console.log(data)
+        dispatch(setDeliveryMode(data))
         setDeliveryReadOnly(true)
     };
+
+    const handleClick = () => {
+        console.log(items)
+        console.log(shippingInfo)
+        console.log(deliveryMode)
+    }
 
     return (
     <Layout title="Payment Method">
@@ -242,6 +236,9 @@ export default function CheckoutPage() {
                                 name='deliveryMode' 
                                 id='express'
                                 type="radio" 
+                                value="express"
+                                defaultChecked={deliveryMode === "express"}
+                                required
                                 {...registerDelivery("deliveryMode")}
                             />
                             <label 
@@ -258,7 +255,10 @@ export default function CheckoutPage() {
                                 className="focus:ring-0"
                                 name='deliveryMode'
                                 id='standard' 
-                                type="radio" 
+                                type="radio"
+                                value="standard"
+                                defaultChecked={deliveryMode === "standard"}
+                                required 
                                 {...registerDelivery("deliveryMode")}
                             />
                             <label 
@@ -274,8 +274,11 @@ export default function CheckoutPage() {
                                 disabled={deliveryReadOnly}
                                 className="focus:ring-0"
                                 name='deliveryMode'
-                                id='economic' 
-                                type="radio" 
+                                id='economy' 
+                                type="radio"
+                                value="economy"
+                                defaultChecked={deliveryMode === "economy"}
+                                required 
                                 {...registerDelivery("deliveryMode")}
                             />
                             <label 
@@ -290,23 +293,21 @@ export default function CheckoutPage() {
                         <div>
                             {
                                 deliveryReadOnly && 
-                                    <span 
-                                        className='underline color text-blue-600 cursor-pointer col-span-1'
-                                        onClick={()=> setDeliveryReadOnly(false)}
-                                    >
-                                        Edit
-                                    </span>
-                                    
+                                <span 
+                                    className='underline color text-blue-600 cursor-pointer col-span-1'
+                                    onClick={()=> setDeliveryReadOnly(false)}
+                                >
+                                    Edit
+                                </span>       
                             }
                         </div>
                         
                         {/** Button continue */}
-                        <div className='mb-4 flex justify-end'>
-                            <button
-                                className='secondary-button'
-                                disabled={false}
-                            >
-                                    Continue
+                        <div 
+                            className='mb-4 flex justify-end'
+                        >
+                            <button className='secondary-button' disabled={false}>
+                                Continue
                             </button>
                         </div>
                     
@@ -323,8 +324,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-between h-8">
                     <span>Subtotal:</span>
                     <span className="text-right">
-                        {/* {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)} */}
-                        0.00
+                        {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
                     </span>
                 </div>
                 <div className="flex justify-between h-8">
@@ -338,13 +338,13 @@ export default function CheckoutPage() {
                 <div className="flex justify-between h-12 border-t-2 font-bold">
                     <span>Total:</span>
                     <span className="text-right">
-                        {/* $ {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)} */}
-                        0.00
+                        $ {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
                     </span>
                 </div>
                 <div>
                     <button
                         className="primary-button w-3/5 mx-auto block" 
+                        onClick={handleClick}
                         //onClick={()=>router.push('login?redirect=/checkout')}
                         //onClick={()=>router.push('checkout')}
                         //onClick={()=>router.push('/login?redirect=/checkout')}

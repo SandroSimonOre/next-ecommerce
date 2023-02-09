@@ -1,12 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-//import { current } from '@reduxjs/toolkit';
 
 const initialState = {
     items: [],
-    shippingAddress: {},
-    paymentMethod: '',
-    identification: {},
-    deliveryInfo: {}
+    shippingInfo: {},
+    deliveryMode: ""
 }
 
 export const cartSlice = createSlice({
@@ -33,24 +30,16 @@ export const cartSlice = createSlice({
       item.quantity--;
     },
 
-    emptyCart: (state, action) => {
+    emptyCart: (state) => {
       state.items = []
     },
 
-    setShippingAddress: (state, action) => {
-      state.shippingAddress = action.payload;
+    setShippingInfo: (state, action) => {
+      state.shippingInfo = action.payload;
     },
 
-    setPaymentMethod: (state, action) => {
-      state.paymentMethod = action.payload;
-    },
-
-    setIdentification: (state, action) => {
-      state.identification = action.payload;
-    },
-
-    setDeliveryInfo: (state, action) => {
-      state.deliveryInfo = action.payload;
+    setDeliveryMode: (state, action) => {
+      state.deliveryMode = action.payload.deliveryMode; // It is ok ? It is not an object.
     }
       
   },
@@ -62,11 +51,8 @@ export const {
   incrementQty, 
   decrementQty, 
   emptyCart,
-  setShippingAddress,
-  setPaymentMethod,
-  clearCartItems,
-  setIdentification,
-  setDeliveryInfo
+  setShippingInfo,
+  setDeliveryMode
 } = cartSlice.actions
 
 export default cartSlice.reducer
