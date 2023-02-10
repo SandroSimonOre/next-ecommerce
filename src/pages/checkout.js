@@ -24,7 +24,7 @@ export default function CheckoutPage() {
     const {
         register: registerDelivery, 
         handleSubmit: handleSubmitDelivery, 
-        formState: { errors: errorsDelivery }
+        //formState: { errors: errorsDelivery }
     } = useForm();
 
 
@@ -361,6 +361,7 @@ export default function CheckoutPage() {
                                 <PaymentButtons 
                                     currency="USD"
                                     amount={1.20}
+                                    disabled={false}
                                     showSpinner={false}
                                     style={{"layout":"vertical"}}
                                 />

@@ -1,5 +1,5 @@
 import { Layout } from "../components/Layout";
-import { useForm, UseForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export default function CreateProductPage() {
@@ -33,6 +33,7 @@ export default function CreateProductPage() {
                 
                 <label htmlFor="">Rating</label>
                 <input {...register('rating', {required: true } )} />
+                {errors && <p>An error has ocurred</p>}
                 
                 <label htmlFor="">Brand</label>
                 <input {...register('brand', {required: true } )} />
