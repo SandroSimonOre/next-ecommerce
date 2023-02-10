@@ -1,5 +1,5 @@
 # Book Store
-This is an app which lists my favorite books
+This is an app which lists all my favorite books. It connects to a MongoDB database and get information about the movies which are rendered locally.
 
 ### Technologies:
 `Next.js`
