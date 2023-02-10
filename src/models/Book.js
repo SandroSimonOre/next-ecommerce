@@ -1,5 +1,4 @@
 import  mongoose from 'mongoose';
-const priceSchema = new mongoose.Schema({ format: String, price: Number });
 const reviewSchema = new mongoose.Schema({ date: Date, author: String, title: String, content: String, })
 
 const bookSchema = new mongoose.Schema(
