@@ -39,11 +39,11 @@ export default function BookPage() {
 
     return (
         <Layout title={book.title}>
-            <div className="py-2">
+            <div className="w-4/5 mx-auto py-2">
                 <Link href='/'>Back to books</Link>
             </div>
-            <div className="grid md:grid-cols-4 md:gap-3">
-                <div className="md:col-span-1">
+            <div className="flex w-4/5 mx-auto gap-x-16">
+                <div className="w-1/3">
                     <Image 
                         src={book.coverURL}
                         alt={book.title}
@@ -52,7 +52,7 @@ export default function BookPage() {
                         layout="responsive"
                     />
                 </div>
-                <div className="md:col-span-2">
+                <div className="w-2/3">
                     <div>
                         <h1 className="text-xl font-bold">{book.title}</h1>
                         <p>{book.authors.join(', ')}</p>
@@ -60,6 +60,7 @@ export default function BookPage() {
                     </div>
 
                     <div className="grid grid-cols-3 grid-rows-2 gap-y-8 text-xs py-6">
+                      
                         <div className="flex flex-col items-center justify-between px-8">
                             <p>Author(s)</p>
                             <GiFeather className="text-3xl" />
@@ -69,16 +70,19 @@ export default function BookPage() {
                                 </p>
                             </div>
                         </div>
+                        
                         <div className="flex flex-col items-center justify-between px-8">
                             <p>Pages</p>
                             <GrDocument className="text-3xl" />
                             <p>{book.pages}</p>
                         </div>
+                        
                         <div className="flex flex-col items-center justify-between gap-y-3 px-8">
                             <p>Format</p>
                             <FaRegFileAudio className="text-3xl" />
                             <p>{book.format}</p>
                         </div>
+                        
                         <div className="flex flex-col items-center justify-between px-8">
                             <p>Publisher</p>
                             <IoLibrarySharp className="text-3xl gap-y-4" />
@@ -88,6 +92,7 @@ export default function BookPage() {
                                 </p>
                             </div>
                         </div>
+                      
                         <div className="flex flex-col items-center justify-between px-8">
                             <p>Publication date</p>
                             <TfiCalendar className="text-3xl" />
@@ -99,11 +104,15 @@ export default function BookPage() {
                             <IoLanguageOutline className="text-3xl" />
                             <p>{book.language}</p>
                         </div>
-                        
-                        
+
                     </div>
 
-                    <div className="flex justify-center h-12"> {/* Button or QS */}
+                    <div className="flex justify-evenly items-center mt-12"> {/* Button or QS */}
+                        <div>
+                            <p className="text-lg">
+                                Price: <span className="font-bold">$ {book.price.toFixed(2)}</span>
+                            </p>
+                        </div>
                         {
                             item ? 
                             (
@@ -138,6 +147,7 @@ export default function BookPage() {
                                 </button>
                             )
                         }
+
                     </div>
                     
                 </div>

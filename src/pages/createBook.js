@@ -8,23 +8,31 @@ import { useEffect } from "react";
 export default function CreateBookPage({sessionInfo}) {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    //console.log(data)
+    
     useEffect( () => {
         
-                console.log('Front end:', sessionInfo)
+         console.log('Front end:', sessionInfo)
             
-        }, [])
+    }, [])
 
     const onSubmit = async (data)=> {
-        //console.log('Data', data)
+        console.log('Data', data)
         
     }
 
     return (
         <Layout>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="">Title</label>
-                <input {...register('title', {required: true } )} />                
+                <div>
+                    <label htmlFor="">Title</label>
+                    <input {...register('title', {required: true } )} />
+                </div>
+                {errors.title && <p>The title is required</p>}
+
+                <button className="primary-button">
+                    Save
+                </button>
+                                
             </form>
         </Layout>
     )

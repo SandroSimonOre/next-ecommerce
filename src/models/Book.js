@@ -1,5 +1,4 @@
 import  mongoose from 'mongoose';
-const reviewSchema = new mongoose.Schema({ date: Date, author: String, title: String, content: String, })
 
 const bookSchema = new mongoose.Schema(
 
@@ -10,14 +9,12 @@ const bookSchema = new mongoose.Schema(
         slug: {type: String, required: false}, 
         coverURL: {type: String, required: false}, 
         pages: {type: Number, required: false}, 
-        reviews: [{type: reviewSchema, reqired: false}],
         price: {type: Number, required: false},
         format: {type: String, required: false},
         authors: [{type: String, required: false}],
         language: {type: String, required: false},
         publicationDate: {type: Date, required: false},
         stars: {type: Number, required: false},
-        related: [{type: String, required: false}]
     }
     ,
     {
