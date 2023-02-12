@@ -7,19 +7,16 @@ export default async function handler(req, res) {
   
   switch (req.method) {
 
-    case 'GET':
-      
+    case 'GET': {
       const result = await Book.find({})
       res.send(result)
       break
-    
-    case 'POST':
-
+    }
+      
+    case 'POST': {
       res.send({message: 'Not implemented yet...'})
       break
-    
-    default:
-      
+    }
   }
   
-};
+}

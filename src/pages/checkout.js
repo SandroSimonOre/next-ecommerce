@@ -27,13 +27,13 @@ export default function CheckoutPage() {
     const shippingInfo = useSelector(state => state.cart.shippingInfo);
     const deliveryMode = useSelector(state => state.cart.deliveryMode);
     const items = useSelector( state => state.cart.items)
-    
-    if (items.length === 0) return <Layout> <h1>There is no item in the cart</h1> </Layout>
 
     const {firstName, lastName, city, address, postalCode} = shippingInfo; 
     
     const [ shippingReadOnly, setShippingReadOnly ] = useState(Object.keys(shippingInfo).length > 0)
     const [ deliveryReadOnly, setDeliveryReadOnly ] = useState(deliveryMode !== "")
+
+    if (items.length === 0) return <Layout> <h1>There is no item in the cart</h1> </Layout>
 
     const onSubmitShipping = data => {
         //console.log(data)
