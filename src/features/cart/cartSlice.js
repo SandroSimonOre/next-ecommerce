@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     items: [],
     shippingInfo: {},
-    deliveryMode: ""
+    deliveryInfo: {}
 }
 
 export const cartSlice = createSlice({
@@ -38,8 +38,8 @@ export const cartSlice = createSlice({
       state.shippingInfo = action.payload;
     },
 
-    setDeliveryMode: (state, action) => {
-      state.deliveryMode = action.payload.deliveryMode; // It is ok ? It is not an object.
+    setDeliveryInfo: (state, action) => {
+      state.deliveryInfo = action.payload; // It is ok ? It is not an object.
     }
       
   },
@@ -52,7 +52,7 @@ export const {
   decrementQty, 
   emptyCart,
   setShippingInfo,
-  setDeliveryMode
+  setDeliveryInfo
 } = cartSlice.actions
 
 export default cartSlice.reducer

@@ -13,3 +13,4 @@
 * Book page: show the total price for the item and the total cart (DONE)
 * Redirection to login in checkout page (DONE)
 * Check the API (DONE)
+* Página de agradecimiento

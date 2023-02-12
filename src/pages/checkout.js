@@ -3,12 +3,15 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Layout } from '../components/Layout';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import { setShippingInfo, setDeliveryMode } from '../features/cart/cartSlice';
+import { setShippingInfo, setDeliveryInfo } from '../features/cart/cartSlice';
 import { PaymentButtons } from '../components/PaymentButtons';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from './api/auth/[...nextauth]';
 
 export default function CheckoutPage() {
+
+    // Maybe this info shoud come from a database
+    const shipmentCost = {'express': 10, 'standard': 6, 'economy': 2}
 
     const {
             register: registerShipping, 
@@ -25,13 +28,13 @@ export default function CheckoutPage() {
 
     const dispatch = useDispatch();
     const shippingInfo = useSelector(state => state.cart.shippingInfo);
-    const deliveryMode = useSelector(state => state.cart.deliveryMode);
+    const deliveryInfo = useSelector(state => state.cart.deliveryInfo);
     const items = useSelector( state => state.cart.items)
 
     const {firstName, lastName, city, address, postalCode} = shippingInfo; 
     
     const [ shippingReadOnly, setShippingReadOnly ] = useState(Object.keys(shippingInfo).length > 0)
-    const [ deliveryReadOnly, setDeliveryReadOnly ] = useState(deliveryMode !== "")
+    const [ deliveryReadOnly, setDeliveryReadOnly ] = useState(Object.keys(deliveryInfo).length > 0)
 
     if (items.length === 0) return <Layout> <h1>There is no item in the cart</h1> </Layout>
 
@@ -42,8 +45,10 @@ export default function CheckoutPage() {
     };
 
     const onSubmitDelivery = data => {
-        //console.log(data)
-        dispatch(setDeliveryMode(data))
+        const cost = shipmentCost[data.mode]
+        data = {...data, cost: Number(cost)}
+        console.log(data)
+        dispatch(setDeliveryInfo(data))
         setDeliveryReadOnly(true)
     };
 
@@ -233,19 +238,19 @@ export default function CheckoutPage() {
                                     <input
                                         disabled={deliveryReadOnly}
                                         className="focus:ring-0"
-                                        name='deliveryMode' 
+                                        name='mode' 
                                         id='express'
                                         type="radio" 
                                         value="express"
-                                        defaultChecked={deliveryMode === "express"}
+                                        defaultChecked={deliveryInfo?.mode === "express"}
                                         required
-                                        {...registerDelivery("deliveryMode")}
+                                        {...registerDelivery("mode")}
                                     />
                                     <label 
                                         className={`ml-3 ${deliveryReadOnly ? 'text-gray-400': ''}`} 
                                         htmlFor="express"
                                     >
-                                        Express
+                                        Express (The same day): <span className='font-bold pl-2'>$ 10.00</span>
                                     </label>
                                 </div>
 
@@ -253,19 +258,19 @@ export default function CheckoutPage() {
                                     <input 
                                         disabled={deliveryReadOnly}
                                         className="focus:ring-0"
-                                        name='deliveryMode'
+                                        name='mode'
                                         id='standard' 
                                         type="radio"
                                         value="standard"
-                                        defaultChecked={deliveryMode === "standard"}
+                                        defaultChecked={deliveryInfo?.mode === "standard"}
                                         required 
-                                        {...registerDelivery("deliveryMode")}
+                                        {...registerDelivery("mode")}
                                     />
                                     <label 
                                         className={`ml-3 ${deliveryReadOnly ? 'text-gray-400': ''}`} 
                                         htmlFor="standard"
                                     >
-                                        Standard <span>2 hours </span><span>$ 5.00 </span>
+                                        Standard (2 - 4 days): <span className='font-bold pl-2'>$ 6.00 </span>
                                     </label>
                                 </div>
 
@@ -273,19 +278,19 @@ export default function CheckoutPage() {
                                     <input 
                                         disabled={deliveryReadOnly}
                                         className="focus:ring-0"
-                                        name='deliveryMode'
+                                        name='mode'
                                         id='economy' 
                                         type="radio"
                                         value="economy"
-                                        defaultChecked={deliveryMode === "economy"}
+                                        defaultChecked={deliveryInfo?.mode === "economy"}
                                         required 
-                                        {...registerDelivery("deliveryMode")}
+                                        {...registerDelivery("mode")}
                                     />
                                     <label 
                                         className={`ml-3 ${deliveryReadOnly ? 'text-gray-400': ''}`} 
                                         htmlFor="economy"
                                     >
-                                        Economy
+                                        Economy (5 - 15 days): <span className='font-bold pl-2'>$ 2.00 </span>
                                     </label>
                                 </div>
                                 
@@ -331,7 +336,9 @@ export default function CheckoutPage() {
 
                         <div className="flex justify-between h-8">
                             <span>Shipment:</span>
-                            <span className="text-right">0.00</span>
+                            <span className="text-right">
+                                {deliveryInfo?.cost?.toFixed(2) || '0.00'}
+                            </span>
                         </div>
 
                         <div className="flex justify-between h-8">
@@ -342,7 +349,7 @@ export default function CheckoutPage() {
                         <div className="flex justify-between h-12 border-t-2 font-bold">
                             <span>Total:</span>
                             <span className="text-right">
-                                $ {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
+                                $ {(items.reduce((a, c) => a + c.quantity * c.price, 0) + (deliveryInfo?.cost || 0)).toFixed(2) }
                             </span>
                         </div>
                         
@@ -357,7 +364,7 @@ export default function CheckoutPage() {
                                 <PaymentButtons 
                                     currency="USD"
                                     amount={1.20}
-                                    disabled={items.length === 0 || Object.keys(shippingInfo).length === 0 || !deliveryMode}
+                                    disabled={items.length === 0 || Object.keys(shippingInfo).length === 0 || Object.keys(deliveryInfo).length === 0}
                                     showSpinner={false}
                                     style={{"layout":"vertical"}}
                                 />
