@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { setShippingInfo, setDeliveryMode } from '../features/cart/cartSlice';
 import { PaymentButtons } from '../components/PaymentButtons';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from './api/auth/[...nextauth]';
 
 /* const initialOptions = {
     "client-id": process.env.NEXT_PUBLIC_CLIENT_ID,
@@ -372,4 +374,15 @@ export default function CheckoutPage() {
             
         </Layout>
     );
+}
+
+export async function getServerSideProps(context) {
+
+    const session = await getServerSession(context.req, context.res, authOptions)
+    
+    if (!session) {
+        return { redirect: { destination: '/login', permanent: false, } }
+    }
+
+    return { props: { sessionInfo: JSON.parse(JSON.stringify(session)),},}
 }

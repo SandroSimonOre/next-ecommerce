@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { QuantitySetter } from "./QuantitySetter";
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,6 +11,24 @@ export const BookCard = ({book}) => {
     const dispatch = useDispatch();
     const items = useSelector( state => state.cart.items);
     const item = items.find( e => e._id === book._id);
+
+    useEffect(()=>{
+        console.log('Renderizando Card')
+    })
+
+    function handleClickCard() {
+        dispatch(addItem(
+            {
+                _id: book._id,
+                title: book.title,
+                quantity: 1,
+                price: book.price,
+                coverURL: book.coverURL,
+                format: book.format,
+                slug: book.slug
+            }                                        
+        ))
+    }
     return (
         <div className="flex flex-col justify-between border border-slate-300 p-3">
 
@@ -48,25 +66,17 @@ export const BookCard = ({book}) => {
             <div className="flex flex-col justify-between" >
                 <div className="flex justify-center h-12">
                     {
-                        !item ? (
+                        !item 
+                            ? (
                                 <button 
                                     type="button" 
                                     className="primary-button" 
-                                    onClick={() => dispatch(addItem(
-                                        {
-                                            _id: book._id,
-                                            title: book.title,
-                                            quantity: 1,
-                                            price: book.price,
-                                            coverURL: book.coverURL,
-                                            format: book.format,
-                                            slug: book.slug
-                                        }                                        
-                                    ))}
+                                    onClick={handleClickCard}
                                 >
                                     Add to Cart
                                 </button>
-                            ) : (   <div className="flex justify-center">
+                            ) : (   
+                                    <div className="flex justify-center">
                                         <QuantitySetter
                                             bookId={book._id}
                                             quantity={item.quantity}

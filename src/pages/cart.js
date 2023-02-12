@@ -117,7 +117,8 @@ export default function CartPage() {
                             items.length > 0 && 
                             <button 
                                 className="primary-button"
-                                onClick={()=>router.push('/login?redirect=/checkout')}
+                                //onClick={()=>router.push('/login?redirect=/checkout')}
+                                onClick={()=>router.push('/checkout')}
                             >
                                 Checkout
                             </button>

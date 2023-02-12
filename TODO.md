@@ -11,3 +11,4 @@
 * Book page: show the total price for the item and the total cart
 * Check Tailwind styles . It's ok for mobile devices?
 * Make a logo
+* Redirection to login in checkout page (DONE)
