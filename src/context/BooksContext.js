@@ -1,5 +1,4 @@
 import React, { useState, useEffect, createContext } from "react"
-import axios from "axios"
 
 export const BooksContext = createContext()
 
@@ -8,14 +7,8 @@ export const BooksProvider = ({children}) => {
 
     useEffect(()=> {
         
-        async function fetchData(){
-            const res = await axios.get('/api/books') 
-            //console.log("Data:",data.data)
-            setBooks(res.data)
-        }
-        
-        fetchData()
-        
+        fetch('/api/books').then(response => response.json()).then(data => setBooks(data))
+        console.log('useEffect in BookContext...')
     }, [])
 
     return (

@@ -1,30 +1,25 @@
-//import { getSession } from 'next-auth/react';
 import Book from '../../../models/Book';
 import dbConnect from '../../../utils/db';
 
-const handler = async (req, res) => {
-  //const session = await getSession({ req });
-  //if (!session) {
-  //  return res.status(401).send('signin required');
-  //}
-
-  //const { user } = session;
+export default async function handler(req, res) {
+  
   await dbConnect();
   
-  const result = await Book.find({})
+  switch (req.method) {
 
-  res.send(result)
-  /*const newOrder = new Order({
-    ...req.body,
-    user: user._id,
-  })result;
+    case 'GET':
+      
+      const result = await Book.find({})
+      res.send(result)
+      break
+    
+    case 'POST':
 
-
-
-  const order = await newOrder.save();
-  */
+      res.send({message: 'Not implemented yet...'})
+      break
+    
+    default:
+      
+  }
   
-
-  //res.status(201).send({message: 'Order saved succesfully'});
 };
-export default handler;

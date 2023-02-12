@@ -12,11 +12,12 @@ export const BookCard = ({book}) => {
     const items = useSelector( state => state.cart.items);
     const item = items.find( e => e._id === book._id);
 
+    // remove this, it is temporal
     useEffect(()=>{
         console.log('Renderizando Card')
-    })
+    }, [items])
 
-    function handleClickCard() {
+    function handleClickAddToCart() {
         dispatch(addItem(
             {
                 _id: book._id,
@@ -29,11 +30,17 @@ export const BookCard = ({book}) => {
             }                                        
         ))
     }
+
+    // This is temporary
+    function handleClickCard(){
+        console.log("Going to the book page...")
+    }
+
     return (
         <div className="flex flex-col justify-between border border-slate-300 p-3">
 
-            <Link href={`/books/${book.slug}`} >
-                <a>
+            <Link href={`/books/${book.slug}`}>
+                <a onClick={handleClickCard}>
                     <Image
                         className="rounded shadow"
                         src={book.coverURL}
@@ -71,7 +78,7 @@ export const BookCard = ({book}) => {
                                 <button 
                                     type="button" 
                                     className="primary-button" 
-                                    onClick={handleClickCard}
+                                    onClick={handleClickAddToCart}
                                 >
                                     Add to Cart
                                 </button>

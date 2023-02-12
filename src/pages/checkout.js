@@ -8,13 +8,6 @@ import { PaymentButtons } from '../components/PaymentButtons';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from './api/auth/[...nextauth]';
 
-/* const initialOptions = {
-    "client-id": process.env.NEXT_PUBLIC_CLIENT_ID,
-    currency: "USD",
-    intent: "capture",
-    // "data-client-token": "abc123xyz==",
-}; */
-
 export default function CheckoutPage() {
 
     const {
@@ -35,6 +28,8 @@ export default function CheckoutPage() {
     const deliveryMode = useSelector(state => state.cart.deliveryMode);
     const items = useSelector( state => state.cart.items)
     
+    if (items.length === 0) return <Layout> <h1>There is no item in the cart</h1> </Layout>
+
     const {firstName, lastName, city, address, postalCode} = shippingInfo; 
     
     const [ shippingReadOnly, setShippingReadOnly ] = useState(Object.keys(shippingInfo).length > 0)
@@ -52,17 +47,11 @@ export default function CheckoutPage() {
         setDeliveryReadOnly(true)
     };
 
-    /* const handleClick = () => {
-        console.log(items)
-        console.log(shippingInfo)
-        console.log(deliveryMode)
-    }
- */
     return (
         <Layout title="Payment Method">
             
                 <div className="flex gap-4 mx-auto w-4/5 mt-8">
-                    { /* Steps */}
+
                     <div className="w-2/3">
                         
                         {/** YOUR ITEMS */}
@@ -330,6 +319,7 @@ export default function CheckoutPage() {
                     
                     {/* Order Summary */}
                     <div className="w-1/3 p-8 border-2 h-fit sticky top-4"> 
+                        
                         <h2 className="font-bold h-12 text-2xl">Order Summary</h2>
                         
                         <div className="flex justify-between h-8">
@@ -338,20 +328,24 @@ export default function CheckoutPage() {
                                 {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
                             </span>
                         </div>
+
                         <div className="flex justify-between h-8">
                             <span>Shipment:</span>
                             <span className="text-right">0.00</span>
                         </div>
+
                         <div className="flex justify-between h-8">
                             <span>Taxes:</span>
                             <span className="text-right">0.00</span>
                         </div>
+
                         <div className="flex justify-between h-12 border-t-2 font-bold">
                             <span>Total:</span>
                             <span className="text-right">
                                 $ {(items.reduce((a, c) => a + c.quantity * c.price, 0)).toFixed(2)}
                             </span>
                         </div>
+                        
                         <div>
                            <PayPalScriptProvider
                                 options={{
@@ -363,7 +357,7 @@ export default function CheckoutPage() {
                                 <PaymentButtons 
                                     currency="USD"
                                     amount={1.20}
-                                    disabled={false}
+                                    disabled={items.length === 0 || Object.keys(shippingInfo).length === 0 || !deliveryMode}
                                     showSpinner={false}
                                     style={{"layout":"vertical"}}
                                 />

@@ -17,10 +17,11 @@ import { FaRegFileAudio } from 'react-icons/fa'
 
 
 export default function BookPage() {
-
+    console.log('Loading book page') // This is temporary
     const [item, setItem] = useState(null)
     const { books } = useContext(BooksContext)
     const { query } = useRouter();
+    const router = useRouter();
     const { slug } = query;
     
     const dispatch = useDispatch();
@@ -107,12 +108,15 @@ export default function BookPage() {
 
                     </div>
 
-                    <div className="flex justify-evenly items-center mt-12"> {/* Button or QS */}
+                    <div className="flex justify-evenly items-center mt-12"> 
+                        {/** Price */}
                         <div>
                             <p className="text-lg">
                                 Price: <span className="font-bold">$ {book.price.toFixed(2)}</span>
                             </p>
                         </div>
+
+                        {/** Go to cart button... */}
                         {
                             item ? 
                             (
@@ -146,6 +150,17 @@ export default function BookPage() {
                                     Add to Cart
                                 </button>
                             )
+                        }
+
+                        {/** Go to checkout button... */}
+                        {
+                            items.length > 0 && 
+                            <button 
+                                className="primary-button"
+                                onClick={()=>router.push('/checkout')}
+                            >
+                                Checkout
+                            </button>
                         }
 
                     </div>
