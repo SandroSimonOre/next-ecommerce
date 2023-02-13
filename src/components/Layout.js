@@ -16,7 +16,11 @@ export const Layout = ({title, children}) => {
         <>
             <Head>
                 <title>{title}</title>
-                <meta name="description" content="My Ecommerce Website"/>
+                <meta property="og:title" content="Bookstore" key="title" />
+                <meta name='type' property='og:type' content='website' />
+                <meta name='image' property='og:image' content='https://bookstore.sandrosimon.com/images/preview.png' />
+                <meta name='url' property='og:url' content='https://bookstore.sandrosimon.com' />
+                <meta name="description" property='og:description' content="Buy your favorite book and pay for it with Paypal." />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <ToastContainer position="bottom-center" limit={1} />
