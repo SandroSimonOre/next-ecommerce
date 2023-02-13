@@ -61,7 +61,7 @@ export const Layout = ({title, children}) => {
                 </main>
                 
                 <footer className="p-8 flex justify-center items-center shadow-inner bg-black text-white">
-                    <p>Copyright ©️ 2022 - Sandro Simón</p>
+                    <p>Copyright ©️ 2023 - Sandro Simón</p>
                 </footer>
             </div>
         </>

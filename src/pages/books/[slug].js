@@ -65,7 +65,7 @@ export default function BookPage() {
                         <p>{'⭐'.repeat(book.stars)}</p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-y-12 text-xs py-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-y-12 text-lg md:text-xs py-6">
                       
                         <div className="flex flex-col items-center justify-between px-8">
                             <p>Author(s)</p>
@@ -100,7 +100,7 @@ export default function BookPage() {
                         </div>
                       
                         <div className="flex flex-col items-center justify-between px-8">
-                            <p>Publication date</p>
+                            <p>Pub. date</p>
                             <TfiCalendar className="text-3xl" />
                             <p>{book.publicationDate.substring(0,10)}</p>
                         </div>
@@ -116,7 +116,7 @@ export default function BookPage() {
                     <div className="flex flex-col items-center m-12"> 
                         {/** Price */}
                         <div className="mx-auto pb-6">
-                            <p className="text-lg">
+                            <p className="text-3xl md:text-lg">
                                 Price: <span className="font-bold">$ {book.price.toFixed(2)}</span>
                             </p>
                         </div>
@@ -140,7 +140,7 @@ export default function BookPage() {
                                     <div className="">   
                                         <button 
                                         type="button" 
-                                        className="primary-button" 
+                                        className="primary-button whitespace-nowrap" 
                                         onClick={() => dispatch(addItem(
                                             {
                                                 _id: book._id,

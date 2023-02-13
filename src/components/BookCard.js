@@ -37,7 +37,7 @@ export const BookCard = ({book}) => {
     }
 
     return (
-        <div className="flex flex-col justify-between border border-slate-300 p-3">
+        <div className="flex flex-col justify-between border border-slate-300 md:p-3">
 
             <Link href={`/books/${book.slug}`}>
                 <a onClick={handleClickCard}>
@@ -49,21 +49,18 @@ export const BookCard = ({book}) => {
                         height={800}
                     />
                 
-                    <div className="text-sm">
-                        <div className="py-0">
-                            <span className="inline-block w-16">Stars:</span>
+                    <div className="p-2 md:px-0 text-lg md:text-sm">
+                        <div className="">
+                            <span className="inline-block w-20 md:w-16">Stars:</span>
                             <span>{'⭐'.repeat(book.stars)}</span>
                         </div>
-                        <div className="py-0">
-                            <span className="inline-block w-16">Price:</span>
+                        <div className="">
+                            <span className="inline-block w-20 md:w-16">Price:</span>
                             <span>${book.price.toFixed(2)}</span>
                         </div>
-                        <div className="py-0">
-                            <span className="inline-block w-16">Format:</span>
+                        <div className="">
+                            <span className="inline-block w-20 md:w-16">Format:</span>
                             <span>{book.format}</span>
-                        </div>
-                        <div className="py-3 flex justify-center">
-                            <span className="underline text-blue-600">Click for details...</span>
                         </div>
                     </div>
                 </a>
@@ -71,7 +68,7 @@ export const BookCard = ({book}) => {
 
             {/* Button */}
             <div className="flex flex-col justify-between" >
-                <div className="flex justify-center h-12">
+                <div className="flex justify-center my-6">
                     {
                         !item 
                             ? (

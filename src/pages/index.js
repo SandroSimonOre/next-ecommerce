@@ -10,7 +10,7 @@ export default function Home() {
    
   return (
      <Layout title='My Ecommerce'>       
-      <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5'>
+      <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-y-6 md:gap-0'>
         {
           books.map( book => <BookCard key={book._id} book={book} /> )
         }
