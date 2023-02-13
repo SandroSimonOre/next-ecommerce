@@ -16,7 +16,7 @@ export const Layout = ({title, children}) => {
         <>
             <Head>
                 <title>{title}</title>
-                <meta property="og:title" content="Bookstore" key="title" />
+                <meta property="og:title" content="BOOKSTORE" key="title" />
                 <meta name='type' property='og:type' content='website' />
                 <meta name='image' property='og:image' content='https://bookstore.sandrosimon.com/images/preview.png' />
                 <meta name='url' property='og:url' content='https://bookstore.sandrosimon.com' />
