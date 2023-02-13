@@ -370,6 +370,10 @@ export default function CheckoutPage() {
                                 />
                             </PayPalScriptProvider>
                         </div>
+
+                        <div className='text-red-600 font-bold text-justify'>
+                            <p>This application has been created for demo purposes only, so it is not a real bookstore. Do not fill out the Paypal form, please.</p>
+                        </div>
                     </div>
                 </div>
             
