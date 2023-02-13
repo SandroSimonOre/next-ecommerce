@@ -55,9 +55,9 @@ export default function CheckoutPage() {
     return (
         <Layout title="Payment Method">
             
-                <div className="flex gap-4 mx-auto w-4/5 mt-8">
+                <div className="flex flex-col md:flex-row gap-4 mx-auto w-4/5 mt-8">
 
-                    <div className="w-2/3">
+                    <div className="md:w-2/3">
                         
                         {/** YOUR ITEMS */}
                         <div className='flex justify-between border-2 mb-6 relative group'>
@@ -323,7 +323,7 @@ export default function CheckoutPage() {
                     </div>
                     
                     {/* Order Summary */}
-                    <div className="w-1/3 p-8 border-2 h-fit sticky top-4"> 
+                    <div className="md:w-1/3 p-8 border-2 h-fit sticky top-4"> 
                         
                         <h2 className="font-bold h-12 text-2xl">Order Summary</h2>
                         

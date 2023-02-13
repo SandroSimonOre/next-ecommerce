@@ -56,11 +56,11 @@ export const Layout = ({title, children}) => {
                     </nav>
                 </header>
 
-                <main className="container m-auto mt-4 px-4">
+                <main className="container m-auto my-4 px-4">
                     {children}
                 </main>
                 
-                <footer className="flex h-10 justify-center items-center shadow-inner">
+                <footer className="p-8 flex justify-center items-center shadow-inner bg-black text-white">
                     <p>Copyright ©️ 2022 - Sandro Simón</p>
                 </footer>
             </div>
