@@ -44,7 +44,7 @@ export const Layout = ({title, children}) => {
                             
                             {
                                 (status === 'authenticated') 
-                                ? <p>{session.user.email}</p>
+                                ? <p className='hidden md:inline-flex'>{session.user.email}</p>
                                 : <><Link href="/login">Sign in</Link><Link href="/signup">Sign up</Link></>
                             }
                             {

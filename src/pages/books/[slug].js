@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Layout } from "../../components/Layout";
@@ -40,11 +39,17 @@ export default function BookPage() {
 
     return (
         <Layout title={book.title}>
-            <div className="w-4/5 mx-auto py-2">
-                <Link href='/'>Back to books</Link>
+            <div className="mx-auto py-2 pb-6 md:w-4/5">
+                <button 
+                    className="secondary-button"
+                    onClick={()=>router.push('/')}
+                >
+                    Go to books
+                </button>
             </div>
-            <div className="flex w-4/5 mx-auto gap-x-16">
-                <div className="w-1/3">
+            
+            <div className="flex flex-col md:flex-row md:w-4/5 mx-auto gap-x-16 gap-y-6">
+                <div className="w-full md:w-1/3">
                     <Image 
                         src={book.coverURL}
                         alt={book.title}
@@ -53,14 +58,14 @@ export default function BookPage() {
                         layout="responsive"
                     />
                 </div>
-                <div className="w-2/3">
+                <div className="w-full md:w-2/3">
                     <div>
                         <h1 className="text-xl font-bold">{book.title}</h1>
                         <p>{book.authors.join(', ')}</p>
                         <p>{'⭐'.repeat(book.stars)}</p>
                     </div>
 
-                    <div className="grid grid-cols-3 grid-rows-2 gap-y-8 text-xs py-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-y-12 text-xs py-6">
                       
                         <div className="flex flex-col items-center justify-between px-8">
                             <p>Author(s)</p>
@@ -108,61 +113,65 @@ export default function BookPage() {
 
                     </div>
 
-                    <div className="flex justify-evenly items-center mt-12"> 
+                    <div className="flex flex-col items-center m-12"> 
                         {/** Price */}
-                        <div>
+                        <div className="mx-auto pb-6">
                             <p className="text-lg">
                                 Price: <span className="font-bold">$ {book.price.toFixed(2)}</span>
                             </p>
                         </div>
 
-                        {/** Go to cart button... */}
-                        {
-                            item ? 
-                            (
-                                <div className="flex justify-center">
-                                    <QuantitySetter
-                                        bookId={book._id}
-                                        quantity={item.quantity}
-                                        dispatch={dispatch}
-                                        removeItem={removeItem}
-                                        decrementQty={decrementQty}
-                                        incrementQty={incrementQty}
-                                    />
+                        <div className="flex gap-x-12 w-full justify-center">
+                            {/** Go to cart button... */}
+                            {
+                                item ? 
+                                (
+                                    <div className="flex justify-center">
+                                        <QuantitySetter
+                                            bookId={book._id}
+                                            quantity={item.quantity}
+                                            dispatch={dispatch}
+                                            removeItem={removeItem}
+                                            decrementQty={decrementQty}
+                                            incrementQty={incrementQty}
+                                        />
+                                    </div>
+                                ) : (   
+                                    <div className="">   
+                                        <button 
+                                        type="button" 
+                                        className="primary-button" 
+                                        onClick={() => dispatch(addItem(
+                                            {
+                                                _id: book._id,
+                                                quantity: 1,
+                                                title: book.title,
+                                                price: book.price,
+                                                coverURL: book.coverURL,
+                                                format: book.format,
+                                                slug: book.slug
+                                            }                                        
+                                        ))}
+                                    >
+                                        Add to Cart
+                                        </button>
+                                    </div>
+                                )
+                            }
+
+                            {/** Go to checkout button... */}
+                            {
+                                items.length > 0 && 
+                                <div className="">
+                                    <button 
+                                        className="primary-button"
+                                        onClick={()=>router.push('/checkout')}
+                                    >
+                                        Checkout
+                                    </button>
                                 </div>
-                            ) : (   
-                                    
-                                <button 
-                                    type="button" 
-                                    className="primary-button" 
-                                    onClick={() => dispatch(addItem(
-                                        {
-                                            _id: book._id,
-                                            quantity: 1,
-                                            title: book.title,
-                                            price: book.price,
-                                            coverURL: book.coverURL,
-                                            format: book.format,
-                                            slug: book.slug
-                                        }                                        
-                                    ))}
-                                >
-                                    Add to Cart
-                                </button>
-                            )
-                        }
-
-                        {/** Go to checkout button... */}
-                        {
-                            items.length > 0 && 
-                            <button 
-                                className="primary-button"
-                                onClick={()=>router.push('/checkout')}
-                            >
-                                Checkout
-                            </button>
-                        }
-
+                            }
+                        </div>
                     </div>
                     
                 </div>
